@@ -1,21 +1,16 @@
-# Flutter Course
+# flutter_first_app
 
-This is the repository for the Flutter course ([Flutter and Dart - The Complete Guide](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/))
+A new Flutter application.
 
-In here all my commits will be made with comments and the title of the lesson.
+## Getting Started
 
-## Course Roadmap
-![Course Roadmap](./img/flutter-course-roadmap.png?raw=true "Course Roadmap")
+This project is a starting point for a Flutter application.
 
+A few resources to get you started if this is your first Flutter project:
 
-## Sections
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-The course sections / lessons will be organized as commits, for instance:
-The Section 2: The Basics
-```
-  "[section number] : [lesson number and title]"
-```
-
-## Authors
-
-* **Eduardo Lima** - du-almeidalima
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
