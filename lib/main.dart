@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/question.dart';
 
 // runApp will take our MyApp Widget and Attach it to the screen. It basically
 // will take the object passed in and call the "build" method
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
 
-  void onQuestionAnswered() {
+  void _onQuestionAnswered() {
     setState(() {
-      this.questionIndex += 1;
+      this._questionIndex += 1;
     });
   }
 
   // Similar as render()
   @override
   Widget build(BuildContext context) {
-    var questionsList = [
-      'Are you a dog or cat type person?',
-      'Coffee or Tea?'
-    ];
+    var questionsList = ['Are you a dog or cat type person?', 'Coffee or Tea?'];
 
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
@@ -35,26 +32,24 @@ class MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: Colors.blue,
         appBar: AppBar(
-          title: Text('Hey durde!'),
+          title: Question(questionsList[this._questionIndex]),
           backgroundColor: Colors.lightBlueAccent,
         ),
-        body: Column(
-            children: [
-              Text(questionsList[this.questionIndex]),
-              RaisedButton(
-                child: Text('Dog Person'),
-                onPressed: this.onQuestionAnswered,
-              ),
-              RaisedButton(
-                child: Text('Cat Person'),
-                onPressed: this.onQuestionAnswered,
-              ),
-              RaisedButton(
-                child: Text('Neither, I\'m a monster!'),
-                onPressed: this.onQuestionAnswered,
-              ),
-            ]
-        ),
+        body: Column(children: [
+          Text(questionsList[this._questionIndex]),
+          RaisedButton(
+            child: Text('Dog Person'),
+            onPressed: this._onQuestionAnswered,
+          ),
+          RaisedButton(
+            child: Text('Cat Person'),
+            onPressed: this._onQuestionAnswered,
+          ),
+          RaisedButton(
+            child: Text('Neither, I\'m a monster!'),
+            onPressed: this._onQuestionAnswered,
+          ),
+        ]),
       ),
     );
   }
