@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
-  var questions = [
+  final questions = const [
     {
       'question': 'Are you a dog or cat type person?',
       'answers': [
@@ -47,9 +47,11 @@ class _MyAppState extends State<MyApp> {
   ];
 
   void _onQuestionAnswered() {
-    setState(() {
-      this._questionIndex += 1;
-    });
+    if (this._questionIndex < this.questions.length) {
+      setState(() {
+        this._questionIndex += 1;
+      });
+    }
   }
 
   // Similar as render()
@@ -64,16 +66,20 @@ class _MyAppState extends State<MyApp> {
           title: Text('Flutter Quiz App!'),
           backgroundColor: Colors.lightBlueAccent,
         ),
-        body: Column(children: [
-          Question(questions[this._questionIndex]['question']),
-          // Similar to React, we're mapping a list to Widgets
-          ...(questions[this._questionIndex]['answers'] as List<String>)
-              .map((answer) => Answer(
-                    selectHandler: this._onQuestionAnswered,
-                    answer: answer,
-                  ))
-              .toList()
-        ]),
+        body: this._questionIndex < this.questions.length
+            ? Column(children: [
+                Question(questions[this._questionIndex]['question']),
+                // Similar to React, we're mapping a list to Widgets
+                ...(questions[this._questionIndex]['answers'] as List<String>)
+                    .map((answer) => Answer(
+                          selectHandler: this._onQuestionAnswered,
+                          answer: answer,
+                        ))
+                    .toList()
+              ])
+            : Center(
+                child: Text('You finished! All your Data is ours!'),
+              ),
       ),
     );
   }
