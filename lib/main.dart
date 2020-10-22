@@ -5,9 +5,20 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  var questionIndex = 0;
+
+  void onQuestionAnswered() {
+    print(questionIndex);
+    this.questionIndex += 1;
+  }
+
   // Similar as render()
   @override
   Widget build(BuildContext context) {
+    var questionsList = [
+      'Are you a dog or cat type person?',
+      'Coffee or Tea?'
+    ];
 
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
@@ -20,18 +31,18 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Text('Are a dog or a cat type person'),
+            Text(questionsList[this.questionIndex]),
             RaisedButton(
               child: Text('Dog Person'),
-              onPressed: null,
+              onPressed: this.onQuestionAnswered,
             ),
             RaisedButton(
               child: Text('Cat Person'),
-              onPressed: null,
+              onPressed: this.onQuestionAnswered,
             ),
             RaisedButton(
               child: Text('Neither, I\'m a monster!'),
-              onPressed: null,
+              onPressed: this.onQuestionAnswered,
             ),
           ]
         ),
