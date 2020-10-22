@@ -5,13 +5,21 @@ import 'package:flutter/material.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   // Similar as render()
   @override
   Widget build(BuildContext context) {
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
-    return MaterialApp(home: Text('Hey Dude!'),);
+    return MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.blue,
+        appBar: AppBar(
+          title: Text('Hey durde!'),
+          backgroundColor: Colors.lightBlueAccent,
+        ),
+        body: Text('Some dummy texts'),
+      ),
+    );
   }
 }
 
