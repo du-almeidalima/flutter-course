@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_first_app/Answer.dart';
 import 'package:flutter_first_app/question.dart';
 
 // runApp will take our MyApp Widget and Attach it to the screen. It basically
@@ -15,6 +16,36 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
+  var questions = [
+    {
+      'question': 'Are you a dog or cat type person?',
+      'answers': [
+        "I'm a dog person",
+        "I'm a cat person",
+        "I'm a turtle",
+        "I'm a monster!",
+      ]
+    },
+    {
+      'question': 'Coffee, Tea or Monster?',
+      'answers': [
+        "Cooffeeeeee",
+        "Tea, please...",
+        "I don't even have teeth anymore",
+        "I'm vegan",
+      ]
+    },
+    {
+      'question': 'Preferred band?',
+      'answers': [
+        "Aerosmith",
+        "AC/DC",
+        "Greta Van Fleet",
+        "Jonas Brothers",
+      ]
+    }
+  ];
+
   void _onQuestionAnswered() {
     setState(() {
       this._questionIndex += 1;
@@ -24,8 +55,6 @@ class _MyAppState extends State<MyApp> {
   // Similar as render()
   @override
   Widget build(BuildContext context) {
-    var questionsList = ['Are you a dog or cat type person?', 'Coffee or Tea?'];
-
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
     return MaterialApp(
@@ -36,19 +65,14 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.lightBlueAccent,
         ),
         body: Column(children: [
-          Question(questionsList[this._questionIndex]),
-          RaisedButton(
-            child: Text('Dog Person'),
-            onPressed: this._onQuestionAnswered,
-          ),
-          RaisedButton(
-            child: Text('Cat Person'),
-            onPressed: this._onQuestionAnswered,
-          ),
-          RaisedButton(
-            child: Text('Neither, I\'m a monster!'),
-            onPressed: this._onQuestionAnswered,
-          ),
+          Question(questions[this._questionIndex]['question']),
+          // Similar to React, we're mapping a list to Widgets
+          ...(questions[this._questionIndex]['answers'] as List<String>)
+              .map((answer) => Answer(
+                    selectHandler: this._onQuestionAnswered,
+                    answer: answer,
+                  ))
+              .toList()
         ]),
       ),
     );
