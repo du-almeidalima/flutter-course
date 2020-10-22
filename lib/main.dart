@@ -32,11 +32,11 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: Colors.blue,
         appBar: AppBar(
-          title: Question(questionsList[this._questionIndex]),
+          title: Text('Flutter Quiz App!'),
           backgroundColor: Colors.lightBlueAccent,
         ),
         body: Column(children: [
-          Text(questionsList[this._questionIndex]),
+          Question(questionsList[this._questionIndex]),
           RaisedButton(
             child: Text('Dog Person'),
             onPressed: this._onQuestionAnswered,

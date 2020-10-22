@@ -25,6 +25,15 @@ and if this data or the input data changes, it gets re-built
 
 ![Widgets Types](./img/flutter-stateful-stateless-widgets.png?raw=true "Widgets Types")
 
+## Container Widget
+
+In HTML + CSS, basically all elements have the same base properties(height, width, position, display)
+but in Flutter, widgets are more basic and centralized with their responsibilities, for example,
+A Text widget will not have a width, margin, padding... It'll only have Text properties. For that
+purpose, we can use the Container widget.
+
+![Container Widget](./img/flutter-container-widget.png?raw=true "Container Widget")
+
 ## Sections
 
 The course sections / lessons will be organized as commits, for instance:

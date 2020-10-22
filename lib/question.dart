@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class Question extends StatelessWidget {
   // Dart allows changing the fields of a class, as any other OOP language. But
@@ -11,6 +12,20 @@ class Question extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(this.questionText);
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(20),
+      child: Text(
+        this.questionText,
+        style: TextStyle(
+          fontSize: 23,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }
+
+//
