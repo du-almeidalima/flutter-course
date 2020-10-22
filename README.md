@@ -9,6 +9,12 @@ In here all my commits will be made with comments and the title of the lesson.
 Widget are the Building Blocks of a Flutter application. The work similar as a React Component.
 ![Widget App Tree](./img/flutter-app-widget-tree.png?raw=true "Widget App Tree")
 
+## Widgets Types
+
+In Flutter, similar to HTML and CSS, we have Widgets that can be visible, such as Text, Input...
+And Widgets that works as structural or utility Widgets, and are not visible
+
+![Widgets Types](./img/flutter-widgets-types.png?raw=true "Widgets Types")
 
 ## Sections
 
