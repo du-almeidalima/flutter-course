@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  // runApp will take our MyApp Widget and Attach it to the screen. It basically
-  // will take the object passed in and call the "build" method
-  runApp(MyApp());
-}
+// runApp will take our MyApp Widget and Attach it to the screen. It basically
+// will take the object passed in and call the "build" method
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
 
   // Similar as render()
+  @override
   Widget build(BuildContext context) {
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
-    return MaterialApp(home: Text('Hey Durde!'),);
+    return MaterialApp(home: Text('Hey Dude!'),);
   }
 }
 
