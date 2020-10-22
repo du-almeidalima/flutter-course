@@ -4,12 +4,21 @@ import 'package:flutter/material.dart';
 // will take the object passed in and call the "build" method
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() {
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
   var questionIndex = 0;
 
   void onQuestionAnswered() {
-    print(questionIndex);
-    this.questionIndex += 1;
+    setState(() {
+      this.questionIndex += 1;
+    });
   }
 
   // Similar as render()
@@ -30,21 +39,21 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.lightBlueAccent,
         ),
         body: Column(
-          children: [
-            Text(questionsList[this.questionIndex]),
-            RaisedButton(
-              child: Text('Dog Person'),
-              onPressed: this.onQuestionAnswered,
-            ),
-            RaisedButton(
-              child: Text('Cat Person'),
-              onPressed: this.onQuestionAnswered,
-            ),
-            RaisedButton(
-              child: Text('Neither, I\'m a monster!'),
-              onPressed: this.onQuestionAnswered,
-            ),
-          ]
+            children: [
+              Text(questionsList[this.questionIndex]),
+              RaisedButton(
+                child: Text('Dog Person'),
+                onPressed: this.onQuestionAnswered,
+              ),
+              RaisedButton(
+                child: Text('Cat Person'),
+                onPressed: this.onQuestionAnswered,
+              ),
+              RaisedButton(
+                child: Text('Neither, I\'m a monster!'),
+                onPressed: this.onQuestionAnswered,
+              ),
+            ]
         ),
       ),
     );
@@ -67,4 +76,20 @@ class MyApp extends StatelessWidget {
  *
  * The MaterialApp is kind of a container  that does a basic setup
  * it bundles all the Widgets to form an App.
+ */
+
+/*
+ * StatefulWidget
+ *
+ * As with React, an Widget (Component) can store state and gets
+ * re-rendered/re-built if this state changes. But in Flutter we need to
+ * separate the State from the Widget, because the Widget get's re-built and if
+ * the State would be attached to it, it'd get loss.
+ *
+ * So first, we need create an class that extends StatefulWidget and other
+ * That extends the State class.
+ *
+ * The State class will also receive the StatefulWidget base class as the
+ * generic type. And the StatefulWidget extend class will need to implement
+ * the createState method.
  */
