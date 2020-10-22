@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   // Similar as render()
   @override
   Widget build(BuildContext context) {
+
     // home: is the widget that will be first loaded in the app, similar to a
     // root rout "/"
     return MaterialApp(
@@ -17,7 +18,23 @@ class MyApp extends StatelessWidget {
           title: Text('Hey durde!'),
           backgroundColor: Colors.lightBlueAccent,
         ),
-        body: Text('Some dummy texts'),
+        body: Column(
+          children: [
+            Text('Are a dog or a cat type person'),
+            RaisedButton(
+              child: Text('Dog Person'),
+              onPressed: null,
+            ),
+            RaisedButton(
+              child: Text('Cat Person'),
+              onPressed: null,
+            ),
+            RaisedButton(
+              child: Text('Neither, I\'m a monster!'),
+              onPressed: null,
+            ),
+          ]
+        ),
       ),
     );
   }
