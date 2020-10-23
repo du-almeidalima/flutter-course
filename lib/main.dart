@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_first_app/Answer.dart';
-import 'package:flutter_first_app/question.dart';
+import 'package:flutter_first_app/quiz.dart';
+import 'package:flutter_first_app/result.dart';
 
 // runApp will take our MyApp Widget and Attach it to the screen. It basically
 // will take the object passed in and call the "build" method
@@ -16,9 +16,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
-  final questions = const [
+  final _questions = const [
     {
-      'question': 'Are you a dog or cat type person?',
+      'title': 'Are you a dog or cat type person?',
       'answers': [
         "I'm a dog person",
         "I'm a cat person",
@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       ]
     },
     {
-      'question': 'Coffee, Tea or Monster?',
+      'title': 'Coffee, Tea or Monster?',
       'answers': [
         "Cooffeeeeee",
         "Tea, please...",
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       ]
     },
     {
-      'question': 'Preferred band?',
+      'title': 'Preferred band?',
       'answers': [
         "Aerosmith",
         "AC/DC",
@@ -46,8 +46,8 @@ class _MyAppState extends State<MyApp> {
     }
   ];
 
-  void _onQuestionAnswered() {
-    if (this._questionIndex < this.questions.length) {
+  void _onAnswerSelected() {
+    if (this._questionIndex < this._questions.length) {
       setState(() {
         this._questionIndex += 1;
       });
@@ -66,20 +66,9 @@ class _MyAppState extends State<MyApp> {
           title: Text('Flutter Quiz App!'),
           backgroundColor: Colors.lightBlueAccent,
         ),
-        body: this._questionIndex < this.questions.length
-            ? Column(children: [
-                Question(questions[this._questionIndex]['question']),
-                // Similar to React, we're mapping a list to Widgets
-                ...(questions[this._questionIndex]['answers'] as List<String>)
-                    .map((answer) => Answer(
-                          selectHandler: this._onQuestionAnswered,
-                          answer: answer,
-                        ))
-                    .toList()
-              ])
-            : Center(
-                child: Text('You finished! All your Data is ours!'),
-              ),
+        body: this._questionIndex < this._questions.length
+            ? Quiz(_questions[this._questionIndex], _onAnswerSelected)
+            : Result(),
       ),
     );
   }
