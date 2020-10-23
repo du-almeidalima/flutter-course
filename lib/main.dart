@@ -56,6 +56,13 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  void _onAppReset() {
+    setState(() {
+      this._totalScore = 0;
+      this._questionIndex = 0;
+    });
+  }
+
   // Similar as render()
   @override
   Widget build(BuildContext context) {
@@ -70,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: this._questionIndex < this._questions.length
             ? Quiz(_questions[this._questionIndex], _onAnswerSelected)
-            : Result.namedConstructor(this._totalScore),
+            : Result.namedConstructor(this._totalScore, _onAppReset),
       ),
     );
   }

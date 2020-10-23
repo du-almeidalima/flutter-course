@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class Result extends StatelessWidget {
-  final int totalScore;
-
+  final int _totalScore;
+  final Function _onResetApp;
   // Just trying out named constructors
-  Result.namedConstructor(this.totalScore);
+  Result.namedConstructor(this._totalScore, this._onResetApp);
 
   @override
   Widget build(BuildContext context) {
     String text, title;
 
-    if (this.totalScore > 23) {
+    if (this._totalScore > 23) {
       title = 'You rock!';
       text = 'I would really like to hang out with you in the lunch time';
-    } else if (this.totalScore > 15) {
+    } else if (this._totalScore > 15) {
       title = 'Not bad...';
       text = 'Maybe you are worth the air you breath';
     } else {
@@ -30,7 +30,7 @@ class Result extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(bottom: 20),
               child: Text(
-                "Score: $totalScore",
+                "Score: $_totalScore",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,
@@ -51,6 +51,13 @@ class Result extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.white, fontSize: 18),
             ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton(
+                child: Text('Reset'),
+                onPressed: this._onResetApp,
+              ),
+            )
           ],
         ));
   }
