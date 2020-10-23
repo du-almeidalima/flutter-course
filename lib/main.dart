@@ -1,51 +1,39 @@
-import 'package:assignment_one/text-control.dart';
-import 'package:assignment_one/text.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  return runApp(MyApp());
-}
+void main() => runApp(DinheirinhoApp());
 
-class MyApp extends StatefulWidget {
-  final textList = const [
-    "Hey Dude",
-    "Don't make it bad",
-    "Do a backflip",
-    "And you'll feel better",
-    "The minute, you let the swag into your skin",
-    "Then you begin to make it better"
-  ];
-
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  int _textIndex = 0;
-
-  void onChangeText() {
-    if (this._textIndex < widget.textList.length - 1) {
-      setState(() {
-        _textIndex++;
-      });
-    }
-  }
-
+class DinheirinhoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('Assignment 1'),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Meu Dinheirinho'),
+      ),
+      body: Column(
+        children: <Widget>[
+          // The Text Widget depends on the size of its content and the Card
+          // Will fit the size of its child, unless its parent has a defined
+          // width
+          Container(
+            width: double.infinity,
+            child: Card(
+              child: Text('CHART'),
+            ),
           ),
-          body: Column(
-            children: [
-              DisplayedText(widget.textList[_textIndex]),
-              TextControl(this.onChangeText),
-            ],
-          )),
+          Card(
+            child: Text('LIST OF EXPENSES'),
+          )
+        ],
+      ),
     );
   }
 }
