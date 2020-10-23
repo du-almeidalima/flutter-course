@@ -16,10 +16,10 @@ class Quiz extends StatelessWidget {
       child: Column(children: [
         Question(question['title']),
         // Similar to React, we're mapping a list to Widgets
-        ...(question['answers'] as List<String>)
+        ...(question['answers'] as List<Map<String, Object>>)
             .map((answer) => Answer(
-                  selectHandler: this._onAnswerSelected,
-                  answer: answer,
+                  selectHandler: () => this._onAnswerSelected(answer['score']),
+                  answer: answer['text'],
                 ))
             .toList()
       ]),

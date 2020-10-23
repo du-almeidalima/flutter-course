@@ -15,40 +15,42 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  var _totalScore = 0;
 
   final _questions = const [
     {
       'title': 'Are you a dog or cat type person?',
       'answers': [
-        "I'm a dog person",
-        "I'm a cat person",
-        "I'm a turtle",
-        "I'm a monster!",
+        {'text': "I'm a dog person", 'score': 10},
+        {'text': "I'm a cat person", 'score': 5},
+        {'text': "I'm a turtle", 'score': 8},
+        {'text': "I'm a monster!", 'score': 3},
       ]
     },
     {
       'title': 'Coffee, Tea or Monster?',
       'answers': [
-        "Cooffeeeeee",
-        "Tea, please...",
-        "I don't even have teeth anymore",
-        "I'm vegan",
+        {'text': "Tea, please...", 'score': 5},
+        {'text': "Cooffeeeeee", 'score': 10},
+        {'text': "I'm vegan", 'score': -10},
+        {'text': "I don't even have teeth anymore", 'score': 3},
       ]
     },
     {
       'title': 'Preferred band?',
       'answers': [
-        "Aerosmith",
-        "AC/DC",
-        "Greta Van Fleet",
-        "Jonas Brothers",
+        {'text': "Aerosmith", 'score': 3},
+        {'text': "AC/DC", 'score': 8},
+        {'text': "Greta Van Fleet", 'score': 8},
+        {'text': "Jonas Brothers", 'score': -99},
       ]
     }
   ];
 
-  void _onAnswerSelected() {
+  void _onAnswerSelected(int score) {
     if (this._questionIndex < this._questions.length) {
       setState(() {
+        this._totalScore += score;
         this._questionIndex += 1;
       });
     }
@@ -68,7 +70,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: this._questionIndex < this._questions.length
             ? Quiz(_questions[this._questionIndex], _onAnswerSelected)
-            : Result(),
+            : Result.namedConstructor(this._totalScore),
       ),
     );
   }
