@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           // The Text Widget depends on the size of its content and the Card
           // Will fit the size of its child, unless its parent has a defined
@@ -43,15 +43,43 @@ class HomePage extends StatelessWidget {
             children: [
               ...this.transactionsList.map((transaction) {
                 return Card(
-                  child: Row(children: [
-                    Text("\$ ${transaction.amount}"),
-                    Column(
+                  child: Row(
                       children: [
-                        Text(transaction.title),
-                        Text(transaction.date.toString()),
-                      ],
-                    ),
-                  ]),
+                        Container(
+                          child: Text(
+                            "\$ ${transaction.amount.toStringAsFixed(2)}",
+                            softWrap: false,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.lightBlueAccent,
+                            ),
+                          ),
+                          width: 100,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2, color: Colors.lightBlueAccent),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              transaction.title,
+                              style: TextStyle(
+                                color: Colors.lightBlueAccent[700],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(transaction.date.toString()),
+                          ],
+                        ),
+                      ]),
                 );
               }).toList()
             ],
