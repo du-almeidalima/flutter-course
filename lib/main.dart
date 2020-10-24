@@ -31,7 +31,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           // The Text Widget depends on the size of its content and the Card
           // Will fit the size of its child, unless its parent has a defined
@@ -39,48 +38,69 @@ class HomePage extends StatelessWidget {
           Card(
             child: Text('CHART'),
           ),
+          Card(
+            elevation: 5,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Item'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Amount'),
+                  ),
+                  OutlineButton(
+                    onPressed: () {},
+                    child: Text('Save'),
+                    textColor: Colors.blueAccent,
+                  )
+                ],
+              ),
+            ),
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ...this.transactionsList.map((transaction) {
                 return Card(
-                  child: Row(
+                  child: Row(children: [
+                    Container(
+                      child: Text(
+                        "\$ ${transaction.amount.toStringAsFixed(2)}",
+                        softWrap: false,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.lightBlueAccent,
+                        ),
+                      ),
+                      width: 100,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(width: 2, color: Colors.lightBlueAccent),
+                      ),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                          child: Text(
-                            "\$ ${transaction.amount.toStringAsFixed(2)}",
-                            softWrap: false,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.lightBlueAccent,
-                            ),
-                          ),
-                          width: 100,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 2, color: Colors.lightBlueAccent),
+                        Text(
+                          transaction.title,
+                          style: TextStyle(
+                            color: Colors.lightBlueAccent[700],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              transaction.title,
-                              style: TextStyle(
-                                color: Colors.lightBlueAccent[700],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            Text(DateFormat.yMMMMd().format(transaction.date)),
-                          ],
-                        ),
-                      ]),
+                        Text(DateFormat.yMMMMd().format(transaction.date)),
+                      ],
+                    ),
+                  ]),
                 );
               }).toList()
             ],
