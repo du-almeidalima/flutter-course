@@ -16,8 +16,10 @@ class DinheirinhoApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   final List<Transaction> transactionsList = [
     Transaction(id: 't1', title: 'Shoes', date: DateTime.now(), amount: 99.99),
-    Transaction(id: 't2', title: 'WaterCooler', date: DateTime.now(), amount: 199.99),
-    Transaction(id: 't3', title: 'Kit Cooler', date: DateTime.now(), amount: 350.00)
+    Transaction(
+        id: 't2', title: 'WaterCooler', date: DateTime.now(), amount: 199.99),
+    Transaction(
+        id: 't3', title: 'Kit Cooler', date: DateTime.now(), amount: 350.00)
   ];
 
   @override
@@ -40,7 +42,17 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               ...this.transactionsList.map((transaction) {
-                return Card(child: Text(transaction.title),);
+                return Card(
+                  child: Row(children: [
+                    Text("\$ ${transaction.amount}"),
+                    Column(
+                      children: [
+                        Text(transaction.title),
+                        Text(transaction.date.toString()),
+                      ],
+                    ),
+                  ]),
+                );
               }).toList()
             ],
           )
