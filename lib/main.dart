@@ -23,6 +23,11 @@ class HomePage extends StatelessWidget {
         id: 't3', title: 'Kit Cooler', date: DateTime.now(), amount: 350.00)
   ];
 
+  // We can pass TextControllers to TextFields and Flutter will register the
+  // Value on them, so we don't need to manually create functions to do so.
+  final itemController = TextEditingController();
+  final amountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +52,11 @@ class HomePage extends StatelessWidget {
                 children: [
                   TextField(
                     decoration: InputDecoration(labelText: 'Item'),
+                    controller: this.itemController,
                   ),
                   TextField(
                     decoration: InputDecoration(labelText: 'Amount'),
+                    controller: this.amountController,
                   ),
                   OutlineButton(
                     onPressed: () {},
