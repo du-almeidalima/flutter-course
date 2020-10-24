@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/model/transaction.dart';
 
 void main() => runApp(DinheirinhoApp());
@@ -76,7 +77,7 @@ class HomePage extends StatelessWidget {
                                 fontSize: 18,
                               ),
                             ),
-                            Text(transaction.date.toString()),
+                            Text(DateFormat.yMMMMd().format(transaction.date)),
                           ],
                         ),
                       ]),
