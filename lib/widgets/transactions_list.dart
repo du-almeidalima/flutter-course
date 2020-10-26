@@ -11,52 +11,50 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 450,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ...this._userTransactions.map((transaction) {
-              return Card(
-                child: Row(children: [
-                  Container(
-                    child: Text(
-                      "\$ ${transaction.amount.toStringAsFixed(2)}",
-                      softWrap: false,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.lightBlueAccent,
-                      ),
-                    ),
-                    width: 100,
-                    margin:
-                    EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border:
-                      Border.all(width: 2, color: Colors.lightBlueAccent),
+      child: ListView.builder(
+        itemCount: _userTransactions.length,
+        itemExtent: 75,
+        itemBuilder: (BuildContext context, int index) {
+          final transaction = this._userTransactions[index];
+          return Card(
+            child: Row(children: [
+              Container(
+                width: 100,
+                margin:
+                EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border:
+                  Border.all(width: 2, color: Colors.lightBlueAccent),
+                ),
+                child: Text(
+                  "\$ ${transaction.amount.toStringAsFixed(2)}",
+                  softWrap: false,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.lightBlueAccent,
+                  ),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    transaction.title,
+                    style: TextStyle(
+                      color: Colors.lightBlueAccent[700],
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        transaction.title,
-                        style: TextStyle(
-                          color: Colors.lightBlueAccent[700],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                      Text(DateFormat.yMMMMd().format(transaction.date)),
-                    ],
-                  ),
-                ]),
-              );
-            }).toList()
-          ],
-        ),
+                  Text(DateFormat.yMMMMd().format(transaction.date)),
+                ],
+              ),
+            ]),
+          );
+        },
       ),
     );
   }
@@ -64,5 +62,15 @@ class TransactionList extends StatelessWidget {
 
 /*
  * In Flutter if we want to make some Widget scrollable, we need to first,
- * define a height on it, and then we can wrap it SingleChildScrollView
+ * define a height on it, and then we can wrap it SingleChildScrollView.
+ *
+ * In here, we could use the ListView, which is basically a Column with a
+ * SingleChildScrollView, but ListView is recommended for short lists with
+ * a fixed length.
+ *
+ * Another alternative, is to use the ListView.build() which is a ListView
+ * that only renders the items that are being currently shown onto the screen.
+ * But for using this Widget, we need to provide a itemBuilder function as a
+ * named argument, that will build the List items based on the index of the
+ * currently being loaded.
  */
