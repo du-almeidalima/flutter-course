@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:meu_dinheirinho/widgets/new_transaction.dart';
+import 'package:meu_dinheirinho/widgets/transactions_list.dart';
 import 'package:meu_dinheirinho/widgets/user_transactions.dart';
+
+import 'model/transaction.dart';
 
 void main() => runApp(DinheirinhoApp());
 
+// == MAIN ==
 class DinheirinhoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -10,9 +15,43 @@ class DinheirinhoApp extends StatelessWidget {
       home: HomePage(),
     );
   }
+
+}
+// == HOME PAGE ==
+class HomePage extends StatefulWidget {
+
+  @override
+  _HomePageState createState() => _HomePageState();
 }
 
-class HomePage extends StatelessWidget {
+class _HomePageState extends State<HomePage> {
+  final List<Transaction> _userTransactions = [
+    Transaction(id: 't1', title: 'Shoes', date: DateTime.now(), amount: 99.99),
+    Transaction(
+        id: 't2', title: 'WaterCooler', date: DateTime.now(), amount: 199.99),
+    Transaction(
+        id: 't3', title: 'Kit Cooler', date: DateTime.now(), amount: 350.00)
+  ];
+
+  void _startAddNewTransaction(BuildContext context) {
+    showModalBottomSheet(context: context, builder: (builderContext) {
+      return NewTransaction(this._addTransaction);
+    });
+  }
+
+  void _addTransaction(String title, double amount) {
+    final newTransaction = Transaction(
+        id: DateTime.now().toString(),
+        title: title,
+        amount: amount,
+        date: DateTime.now()
+    );
+
+    setState(() {
+      this._userTransactions.add(newTransaction);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +60,9 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              this._startAddNewTransaction(context);
+            },
           ),
         ],
       ),
@@ -35,13 +76,15 @@ class HomePage extends StatelessWidget {
             Card(
               child: Text('CHART'),
             ),
-            UserTransactions()
+            TransactionList(this._userTransactions)
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          this._startAddNewTransaction(context);
+        },
       ),
     );
   }
