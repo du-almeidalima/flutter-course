@@ -13,13 +13,17 @@ class DinheirinhoApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Meu Dinheirinho'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -34,6 +38,10 @@ class HomePage extends StatelessWidget {
             UserTransactions()
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
     );
   }
