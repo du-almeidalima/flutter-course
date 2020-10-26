@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meu_dinheirinho/widgets/new_transaction.dart';
 import 'package:meu_dinheirinho/widgets/transactions_list.dart';
-import 'package:meu_dinheirinho/widgets/user_transactions.dart';
 
 import 'model/transaction.dart';
 
