@@ -61,7 +61,7 @@ class _NewTransactionState extends State<NewTransaction> {
             OutlineButton(
               onPressed: this._submitTransaction,
               child: Text('Save'),
-              textColor: Colors.blueAccent,
+              textColor: Theme.of(context).primaryColor,
             )
           ],
         ),

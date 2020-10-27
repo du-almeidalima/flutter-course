@@ -11,7 +11,12 @@ class DinheirinhoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Meu Dinheirinho',
       home: HomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        accentColor: Colors.indigoAccent
+      ),
     );
   }
 
