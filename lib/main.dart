@@ -16,7 +16,7 @@ class DinheirinhoApp extends StatelessWidget {
       home: HomePage(),
       theme: ThemeData(
         primarySwatch: Colors.green,
-        accentColor: Colors.indigoAccent,
+        accentColor: Colors.green[900],
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
               headline6: TextStyle(
@@ -98,9 +98,7 @@ class _HomePageState extends State<HomePage> {
             // The Text Widget depends on the size of its content and the Card
             // Will fit the size of its child, unless its parent has a defined
             // width
-            Card(
-              child: Chart(this._userTransactions),
-            ),
+            Chart(this._userTransactions),
             TransactionList(this._userTransactions)
           ],
         ),
