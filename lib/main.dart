@@ -15,15 +15,32 @@ class DinheirinhoApp extends StatelessWidget {
       home: HomePage(),
       theme: ThemeData(
         primarySwatch: Colors.green,
-        accentColor: Colors.indigoAccent
+        accentColor: Colors.indigoAccent,
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        // Copying the AppTheme and only customizing the FontFamily for appBar Children
+        appBarTheme: AppBarTheme(
+          // ThemeData.light() copies the theme configuration
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+        ),
       ),
     );
   }
-
 }
+
 // == HOME PAGE ==
 class HomePage extends StatefulWidget {
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -38,9 +55,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   void _startAddNewTransaction(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (builderContext) {
-      return NewTransaction(this._addTransaction);
-    });
+    showModalBottomSheet(
+        context: context,
+        builder: (builderContext) {
+          return NewTransaction(this._addTransaction);
+        });
   }
 
   void _addTransaction(String title, double amount) {
@@ -48,8 +67,7 @@ class _HomePageState extends State<HomePage> {
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now()
-    );
+        date: DateTime.now());
 
     setState(() {
       this._userTransactions.add(newTransaction);
@@ -60,7 +78,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Meu Dinheirinho'),
+        title: Text(
+          'Meu Dinheirinho',
+        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.add),

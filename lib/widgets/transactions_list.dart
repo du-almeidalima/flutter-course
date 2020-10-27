@@ -20,12 +20,11 @@ class TransactionList extends StatelessWidget {
             child: Row(children: [
               Container(
                 width: 100,
-                margin:
-                EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  border:
-                  Border.all(width: 2, color: Theme.of(context).primaryColor),
+                  border: Border.all(
+                      width: 2, color: Theme.of(context).primaryColor),
                 ),
                 child: Text(
                   "\$ ${transaction.amount.toStringAsFixed(2)}",
@@ -45,8 +44,11 @@ class TransactionList extends StatelessWidget {
                     transaction.title,
                     style: TextStyle(
                       color: Theme.of(context).primaryColorDark,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                      fontFamily:
+                          Theme.of(context).textTheme.headline6.fontFamily,
+                      fontSize: Theme.of(context).textTheme.headline6.fontSize,
+                      fontWeight:
+                          Theme.of(context).textTheme.headline6.fontWeight,
                     ),
                   ),
                   Text(DateFormat.yMMMMd().format(transaction.date)),
