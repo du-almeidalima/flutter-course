@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meu_dinheirinho/widgets/chart.dart';
 import 'package:meu_dinheirinho/widgets/new_transaction.dart';
 import 'package:meu_dinheirinho/widgets/transactions_list.dart';
 
@@ -98,7 +99,7 @@ class _HomePageState extends State<HomePage> {
             // Will fit the size of its child, unless its parent has a defined
             // width
             Card(
-              child: Text('CHART'),
+              child: Chart(this._userTransactions),
             ),
             TransactionList(this._userTransactions)
           ],
