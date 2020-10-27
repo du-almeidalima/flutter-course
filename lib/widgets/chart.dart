@@ -34,7 +34,7 @@ class Chart extends StatelessWidget {
           return acc + curr.amount;
         }
 
-        return 0;
+        return acc;
       });
 
       return {

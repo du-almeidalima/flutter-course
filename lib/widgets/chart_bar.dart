@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 
 class ChartBar extends StatelessWidget {
   final String _label;
@@ -13,6 +14,7 @@ class ChartBar extends StatelessWidget {
       children: <Widget>[
         // Fix bars being uneven when text is shrunk
         Container(
+          padding: EdgeInsets.symmetric(horizontal: 2),
           height: 18,
           child: FittedBox(
             child: Text('\$${this._amount.toStringAsFixed(2)}'),
@@ -24,6 +26,7 @@ class ChartBar extends StatelessWidget {
           width: 10,
           // Places elements on top of each other
           child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
               Container(
                 decoration: BoxDecoration(

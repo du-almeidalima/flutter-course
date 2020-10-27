@@ -20,12 +20,14 @@ class DinheirinhoApp extends StatelessWidget {
         accentColor: Colors.green[900],
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-              headline6: TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
+            button: TextStyle(
+              color: Colors.white,
+            )),
         // Copying the AppTheme and only customizing the FontFamily for appBar Children
         appBarTheme: AppBarTheme(
           // ThemeData.light() copies the theme configuration
@@ -69,12 +71,12 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  void _addTransaction(String title, double amount) {
+  void _addTransaction(String title, double amount, DateTime transactionDate) {
     final newTransaction = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: transactionDate);
 
     setState(() {
       this._userTransactions.add(newTransaction);
