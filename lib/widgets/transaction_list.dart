@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/model/transaction.dart';
+import 'package:meu_dinheirinho/shared/widgets/confirm_dialog.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _userTransactions;
@@ -63,7 +64,15 @@ class TransactionList extends StatelessWidget {
                         color: Colors.redAccent,
                       ),
                       onPressed: () {
-                        this._deleteTransaction(transaction.id);
+                        ConfirmDialog.show(
+                            context: context,
+                            message: 'Você realmente deseja excluir este item?',
+                            content: Text(
+                              'Essa ação não terá volta.',
+                              textAlign: TextAlign.center,
+                            ),
+                            confirm: () =>
+                                this._deleteTransaction(transaction.id));
                       },
                     ),
                   ),
