@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/model/transaction.dart';
 
@@ -11,53 +12,79 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 450,
-      child: ListView.builder(
-        itemCount: _userTransactions.length,
-        itemExtent: 75,
-        itemBuilder: (BuildContext context, int index) {
-          final transaction = this._userTransactions[index];
-          return Card(
-            child: Row(children: [
-              Container(
-                width: 100,
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 2, color: Theme.of(context).primaryColor),
+      child: _userTransactions.isEmpty
+          ? Column(
+              children: <Widget>[
+                Text(
+                  'Nenhuma transação até agora',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
-                child: Text(
-                  "\$ ${transaction.amount.toStringAsFixed(2)}",
-                  softWrap: false,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Theme.of(context).primaryColor,
+                SizedBox(
+                  height: 50,
+                ),
+                Container(
+                  height: 300,
+                  child: Image.asset(
+                    'assets/images/no-transaction.png',
+                    // BoxFit.cover will infer the height of the Parent into the image
+                    fit: BoxFit.cover,
                   ),
-                ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    transaction.title,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontFamily:
-                          Theme.of(context).textTheme.headline6.fontFamily,
-                      fontSize: Theme.of(context).textTheme.headline6.fontSize,
-                      fontWeight:
-                          Theme.of(context).textTheme.headline6.fontWeight,
+                )
+              ],
+            )
+          : ListView.builder(
+              itemCount: _userTransactions.length,
+              itemExtent: 75,
+              itemBuilder: (BuildContext context, int index) {
+                final transaction = this._userTransactions[index];
+                return Card(
+                  child: Row(children: [
+                    Container(
+                      width: 100,
+                      margin:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).primaryColor),
+                      ),
+                      child: Text(
+                        "\$ ${transaction.amount.toStringAsFixed(2)}",
+                        softWrap: false,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
                     ),
-                  ),
-                  Text(DateFormat.yMMMMd().format(transaction.date)),
-                ],
-              ),
-            ]),
-          );
-        },
-      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          transaction.title,
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColorDark,
+                            fontFamily: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .fontFamily,
+                            fontSize:
+                                Theme.of(context).textTheme.headline6.fontSize,
+                            fontWeight: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .fontWeight,
+                          ),
+                        ),
+                        Text(DateFormat.yMMMMd().format(transaction.date)),
+                      ],
+                    ),
+                  ]),
+                );
+              },
+            ),
     );
   }
 }
