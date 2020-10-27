@@ -11,8 +11,12 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(
-          child: Text('\$${this._amount.toStringAsFixed(2)}'),
+        // Fix bars being uneven when text is shrunk
+        Container(
+          height: 18,
+          child: FittedBox(
+            child: Text('\$${this._amount.toStringAsFixed(2)}'),
+          ),
         ),
         Container(
           margin: EdgeInsets.symmetric(vertical: 4, horizontal: 0),

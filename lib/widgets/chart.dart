@@ -42,7 +42,7 @@ class Chart extends StatelessWidget {
             DateFormat.E('pt_BR').format(weekDay).substring(0, 1).toUpperCase(),
         'amount': weekDayAmount
       };
-    });
+    }).reversed.toList();
   }
 
   @override
