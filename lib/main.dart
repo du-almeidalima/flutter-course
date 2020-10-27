@@ -83,6 +83,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _deleteTransaction(String id){
+    setState(() {
+      this._userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +113,7 @@ class _HomePageState extends State<HomePage> {
             // Will fit the size of its child, unless its parent has a defined
             // width
             Chart(this._userTransactions),
-            TransactionList(this._userTransactions)
+            TransactionList(this._userTransactions, this._deleteTransaction)
           ],
         ),
       ),
