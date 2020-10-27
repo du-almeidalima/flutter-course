@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:meu_dinheirinho/widgets/chart.dart';
 import 'package:meu_dinheirinho/widgets/new_transaction.dart';
-import 'package:meu_dinheirinho/widgets/transactions_list.dart';
+import 'package:meu_dinheirinho/widgets/transaction_list.dart';
 
 import 'model/transaction.dart';
 
@@ -36,6 +37,11 @@ class DinheirinhoApp extends StatelessWidget {
               ),
         ),
       ),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: [const Locale('pt', 'BR')],
     );
   }
 }

@@ -38,7 +38,8 @@ class Chart extends StatelessWidget {
       });
 
       return {
-        'weekDay': DateFormat.E().format(weekDay).substring(0, 1),
+        'weekDay':
+            DateFormat.E('pt_BR').format(weekDay).substring(0, 1).toUpperCase(),
         'amount': weekDayAmount
       };
     });
@@ -62,7 +63,8 @@ class Chart extends StatelessWidget {
                   wdTransaction['amount'],
                   this._totalSpending == 0.0
                       ? 0.0
-                      : (wdTransaction['amount'] as double) / this._totalSpending),
+                      : (wdTransaction['amount'] as double) /
+                          this._totalSpending),
             );
           }).toList(),
         ),
