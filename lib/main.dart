@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -91,20 +92,41 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  // == BUILDER METHODS ==
+  PreferredSizeWidget _buildAppBar(Function startAddNewTransaction) {
+    return Platform.isAndroid
+        ? AppBar(
+            title: const Text(
+              'Meu Dinheirinho',
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.add),
+                onPressed: startAddNewTransaction,
+              ),
+            ],
+          )
+        : CupertinoNavigationBar(
+            middle: const Text(
+              'Meu Dinheirinho',
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  child: const Icon(CupertinoIcons.add),
+                  onTap: startAddNewTransaction,
+                )
+              ],
+            ),
+          );
+  }
+
+  // == BUILD ==
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: Text(
-        'Meu Dinheirinho',
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            this._startAddNewTransaction(context);
-          },
-        ),
-      ],
+    final appBar = this._buildAppBar(
+      () => this._startAddNewTransaction(context),
     );
 
     final double availableHeight = MediaQuery.of(context).size.height -
@@ -116,9 +138,8 @@ class _HomePageState extends State<HomePage> {
       body: Body(
         availableHeight: availableHeight,
         data: BodyData(
-          userTransactions: this._userTransactions,
-          deleteTransaction: this._deleteTransaction
-        ),
+            userTransactions: this._userTransactions,
+            deleteTransaction: this._deleteTransaction),
       ),
       floatingActionButton: Platform.isAndroid
           ? FloatingActionButton(
