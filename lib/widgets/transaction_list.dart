@@ -12,74 +12,71 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 450,
-      child: _userTransactions.isEmpty
-          ? Column(
-              children: <Widget>[
-                Text(
-                  'Nenhuma transação até agora',
-                  style: Theme.of(context).textTheme.headline6,
+    return _userTransactions.isEmpty
+        ? Column(
+            children: <Widget>[
+              Text(
+                'Nenhuma transação até agora',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Container(
+                height: 300,
+                child: Image.asset(
+                  'assets/images/no-transaction.png',
+                  // BoxFit.cover will infer the height of the Parent into the image
+                  fit: BoxFit.cover,
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                Container(
-                  height: 300,
-                  child: Image.asset(
-                    'assets/images/no-transaction.png',
-                    // BoxFit.cover will infer the height of the Parent into the image
-                    fit: BoxFit.cover,
-                  ),
-                )
-              ],
-            )
-          : ListView.builder(
-              itemCount: _userTransactions.length,
-              itemBuilder: (BuildContext context, int index) {
-                final transaction = this._userTransactions[index];
-                return Card(
-                  margin: EdgeInsets.all(5),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: FittedBox(
-                          child: Text(
-                            '\$${transaction.amount.toStringAsFixed(2)}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+              )
+            ],
+          )
+        : ListView.builder(
+            itemCount: _userTransactions.length,
+            itemBuilder: (BuildContext context, int index) {
+              final transaction = this._userTransactions[index];
+              return Card(
+                margin: EdgeInsets.all(5),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: FittedBox(
+                        child: Text(
+                          '\$${transaction.amount.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ),
-                    title: Text(transaction.title),
-                    subtitle: Text(
-                        DateFormat.yMMMd('pt_BR').format(transaction.date)),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.delete_outline,
-                        color: Colors.redAccent,
-                      ),
-                      onPressed: () {
-                        ConfirmDialog.show(
-                            context: context,
-                            message: 'Você realmente deseja excluir este item?',
-                            content: Text(
-                              'Essa ação não terá volta.',
-                              textAlign: TextAlign.center,
-                            ),
-                            confirm: () =>
-                                this._deleteTransaction(transaction.id));
-                      },
-                    ),
                   ),
-                );
-              },
-            ),
-    );
+                  title: Text(transaction.title),
+                  subtitle: Text(
+                      DateFormat.yMMMd('pt_BR').format(transaction.date)),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.delete_outline,
+                      color: Colors.redAccent,
+                    ),
+                    onPressed: () {
+                      ConfirmDialog.show(
+                          context: context,
+                          message: 'Você realmente deseja excluir este item?',
+                          content: Text(
+                            'Essa ação não terá volta.',
+                            textAlign: TextAlign.center,
+                          ),
+                          confirm: () =>
+                              this._deleteTransaction(transaction.id));
+                    },
+                  ),
+                ),
+              );
+            },
+          );
   }
 }
 

@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _deleteTransaction(String id){
+  void _deleteTransaction(String id) {
     setState(() {
       this._userTransactions.removeWhere((transaction) => transaction.id == id);
     });
@@ -91,20 +91,26 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Meu Dinheirinho',
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              this._startAddNewTransaction(context);
-            },
-          ),
-        ],
+    final appBar = AppBar(
+      title: Text(
+        'Meu Dinheirinho',
       ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            this._startAddNewTransaction(context);
+          },
+        ),
+      ],
+    );
+
+    final double availableHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        appBar.preferredSize.height;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,8 +118,15 @@ class _HomePageState extends State<HomePage> {
             // The Text Widget depends on the size of its content and the Card
             // Will fit the size of its child, unless its parent has a defined
             // width
-            Chart(this._userTransactions),
-            TransactionList(this._userTransactions, this._deleteTransaction)
+            Container(
+              height: availableHeight * 0.2,
+              child: Chart(this._userTransactions),
+            ),
+            Container(
+              height: availableHeight * 0.8,
+              child: TransactionList(
+                  this._userTransactions, this._deleteTransaction),
+            )
           ],
         ),
       ),
