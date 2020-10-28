@@ -30,6 +30,10 @@ works like an middle man between Widget tree and Render tree, this tree, holds m
 
 ![Widgets Lifecycle](./readme/widgets-lifecycle.png?raw=true "Widgets Lifecycle")
 
+## App Lifecycle
+
+![App Lifecycle](./readme/app-lifecycle.png?raw=true "App Lifecycle")
+
 ## Sections
 
 The course sections / lessons will be organized as commits, for instance:

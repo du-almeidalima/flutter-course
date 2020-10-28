@@ -57,7 +57,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver{
   final List<Transaction> _userTransactions = [
     Transaction(id: 't1', title: 'Shoes', date: DateTime.now(), amount: 99.99),
     Transaction(
@@ -90,6 +90,28 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       this._userTransactions.removeWhere((transaction) => transaction.id == id);
     });
+  }
+  // == APP LIFECYCLE ==
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print('[_HomePageState] >> didChangeAppLifecycleState');
+    print(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+  // == WIDGET LIFECYCLE ==
+  @override
+  void initState() {
+    // Subscribe to appStateChanges
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    // Unsubscribe to appStateChanges
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   // == BUILDER METHODS ==

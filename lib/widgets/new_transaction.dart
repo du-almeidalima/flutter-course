@@ -7,7 +7,7 @@ class NewTransaction extends StatefulWidget {
   // We can pass TextControllers to TextFields and Flutter will register the
   // Value on them, so we don't need to manually create functions to do so.
 
-  NewTransaction(this._onAddTransaction){
+  NewTransaction(this._onAddTransaction) {
     print('[NewTransaction] >> constructor');
   }
 
@@ -86,12 +86,11 @@ class _NewTransactionState extends State<NewTransaction> {
         elevation: 5,
         child: Container(
           padding: EdgeInsets.only(
-            top: 10,
-            right: 10,
-            left: 10,
-            // Adjusting bottom based on insets, useful for when keyboard is enabled
-            bottom: MediaQuery.of(context).viewInsets.bottom
-          ),
+              top: 10,
+              right: 10,
+              left: 10,
+              // Adjusting bottom based on insets, useful for when keyboard is enabled
+              bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -105,7 +104,8 @@ class _NewTransactionState extends State<NewTransaction> {
               TextField(
                 decoration: const InputDecoration(labelText: 'Amount'),
                 controller: this._amountController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 onSubmitted: (_) {
                   this._submitTransaction();
                 },
