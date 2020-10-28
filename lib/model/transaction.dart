@@ -6,7 +6,7 @@ class Transaction {
   final DateTime date;
   final double amount;
 
-  Transaction({
+  const Transaction({
     @required this.id,
     @required this.title,
     @required this.date,

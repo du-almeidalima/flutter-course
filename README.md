@@ -18,6 +18,13 @@ in the readme folder with more details of them.
 ![Widget 4](./readme/widgets-4.png?raw=true "Widget 4")
 ![Widget 5](./readme/widgets-5.png?raw=true "Widget 5")
 
+## Flutter Trees
+
+Flutter doesn't only have the Widget tree, this is in fact, just a configuration for Flutter, in reality, Flutter will built an
+Element Tree out of this Widget Tree that will be as an skeleton for the real Render Tree, which is what wee see on screen. The Element Tree
+works like an middle man between Widget tree and Render tree, this tree, holds memory reference to Widget trees and Render trees.
+
+![Flutter Trees](./readme/flutter-trees.png?raw=true "Flutter Trees")
 ## Sections
 
 The course sections / lessons will be organized as commits, for instance:

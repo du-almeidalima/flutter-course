@@ -22,19 +22,19 @@ class DinheirinhoApp extends StatelessWidget {
         accentColor: Colors.green[900],
         fontFamily: 'Quicksand',
         textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
+            headline6: const TextStyle(
               fontFamily: 'OpenSans',
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
-            button: TextStyle(
+            button: const TextStyle(
               color: Colors.white,
             )),
         // Copying the AppTheme and only customizing the FontFamily for appBar Children
         appBarTheme: AppBarTheme(
           // ThemeData.light() copies the theme configuration
           textTheme: ThemeData.light().textTheme.copyWith(
-                headline6: TextStyle(
+                headline6: const TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: () {
             this._startAddNewTransaction(context);
           },
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: Platform.isAndroid
           ? FloatingActionButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () {
                 this._startAddNewTransaction(context);
               },

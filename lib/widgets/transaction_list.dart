@@ -19,7 +19,7 @@ class TransactionList extends StatelessWidget {
                 'Nenhuma transação até agora',
                 style: Theme.of(context).textTheme.headline6,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Expanded(
@@ -36,7 +36,7 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final transaction = this._userTransactions[index];
               return Card(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,

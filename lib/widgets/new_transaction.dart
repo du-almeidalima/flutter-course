@@ -67,22 +67,22 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
-                decoration: InputDecoration(labelText: 'Item'),
+                decoration: const InputDecoration(labelText: 'Item'),
                 controller: this._itemController,
                 onSubmitted: (_) {
                   this._submitTransaction();
                 },
               ),
               TextField(
-                decoration: InputDecoration(labelText: 'Amount'),
+                decoration: const InputDecoration(labelText: 'Amount'),
                 controller: this._amountController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 onSubmitted: (_) {
                   this._submitTransaction();
                 },
               ),
               Container(
-                margin: EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: 10),
                 child: Row(
                   children: <Widget>[
                     Expanded(
@@ -91,7 +91,7 @@ class _NewTransactionState extends State<NewTransaction> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.date_range),
+                      icon: const Icon(Icons.date_range),
                       onPressed: () {
                         _openTransactionDatePicker();
                       },
@@ -106,7 +106,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 onPressed: this._submitTransaction,
                 color: Theme.of(context).accentColor,
                 textColor: Theme.of(context).textTheme.button.color,
-                child: Text('Save'),
+                child: const Text('Save'),
               )
             ],
           ),
