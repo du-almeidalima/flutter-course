@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/model/transaction.dart';
-import 'package:meu_dinheirinho/shared/widgets/confirm_dialog.dart';
+
+import 'transaction_list_item.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> _userTransactions;
@@ -35,45 +35,9 @@ class TransactionList extends StatelessWidget {
             itemCount: _userTransactions.length,
             itemBuilder: (BuildContext context, int index) {
               final transaction = this._userTransactions[index];
-              return Card(
-                margin: const EdgeInsets.all(5),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: FittedBox(
-                        child: Text(
-                          '\$${transaction.amount.toStringAsFixed(2)}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  title: Text(transaction.title),
-                  subtitle: Text(
-                      DateFormat.yMMMd('pt_BR').format(transaction.date)),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Icons.delete_outline,
-                      color: Colors.redAccent,
-                    ),
-                    onPressed: () {
-                      ConfirmDialog.show(
-                          context: context,
-                          message: 'Você realmente deseja excluir este item?',
-                          content: Text(
-                            'Essa ação não terá volta.',
-                            textAlign: TextAlign.center,
-                          ),
-                          confirm: () =>
-                              this._deleteTransaction(transaction.id));
-                    },
-                  ),
-                ),
-              );
+              return TransactionListItem(
+                  transaction: transaction,
+                  deleteTransaction: _deleteTransaction);
             },
           );
   }
