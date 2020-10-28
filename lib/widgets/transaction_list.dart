@@ -22,8 +22,7 @@ class TransactionList extends StatelessWidget {
               SizedBox(
                 height: 50,
               ),
-              Container(
-                height: 300,
+              Expanded(
                 child: Image.asset(
                   'assets/images/no-transaction.png',
                   // BoxFit.cover will infer the height of the Parent into the image
