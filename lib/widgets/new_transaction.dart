@@ -50,56 +50,66 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: 'Item'),
-              controller: this._itemController,
-              onSubmitted: (_) {
-                this._submitTransaction();
-              },
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: this._amountController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) {
-                this._submitTransaction();
-              },
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      DateFormat('dd/MM/yyyy').format(this._transactionDate),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.date_range),
-                    onPressed: () {
-                      _openTransactionDatePicker();
-                    },
-                  )
-                ],
+    // Using SingleChildScrollView for when keyboard is enabled, it will "squeeze"
+    // the content and make it scrollable
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            // Adjusting bottom based on insets, useful for when keyboard is enabled
+            bottom: MediaQuery.of(context).viewInsets.bottom
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: 'Item'),
+                controller: this._itemController,
+                onSubmitted: (_) {
+                  this._submitTransaction();
+                },
               ),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            RaisedButton(
-              onPressed: this._submitTransaction,
-              color: Theme.of(context).accentColor,
-              textColor: Theme.of(context).textTheme.button.color,
-              child: Text('Save'),
-            )
-          ],
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: this._amountController,
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onSubmitted: (_) {
+                  this._submitTransaction();
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        DateFormat('dd/MM/yyyy').format(this._transactionDate),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.date_range),
+                      onPressed: () {
+                        _openTransactionDatePicker();
+                      },
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              RaisedButton(
+                onPressed: this._submitTransaction,
+                color: Theme.of(context).accentColor,
+                textColor: Theme.of(context).textTheme.button.color,
+                child: Text('Save'),
+              )
+            ],
+          ),
         ),
       ),
     );
