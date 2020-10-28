@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:meu_dinheirinho/shared/date_text_formatter.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function _onAddTransaction;
@@ -8,10 +7,15 @@ class NewTransaction extends StatefulWidget {
   // We can pass TextControllers to TextFields and Flutter will register the
   // Value on them, so we don't need to manually create functions to do so.
 
-  NewTransaction(this._onAddTransaction);
+  NewTransaction(this._onAddTransaction){
+    print('[NewTransaction] >> constructor');
+  }
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTransactionState createState() {
+    print('[NewTransaction] >> createState');
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
@@ -19,6 +23,31 @@ class _NewTransactionState extends State<NewTransaction> {
   final _amountController = TextEditingController();
   DateTime _transactionDate = DateTime.now();
 
+  _NewTransactionState() {
+    print('[_NewTransactionState] >> constructor');
+  }
+
+  // == LIFECYCLE METHODS ==
+  @override
+  void initState() {
+    print('[_NewTransactionState] >> initState');
+
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print('[_NewTransactionState] >> didUpdateWidget');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print('[_NewTransactionState] >> dispose');
+    super.dispose();
+  }
+
+  // == METHODS ==
   void _submitTransaction() {
     final item = this._itemController.text;
     final transactionDate = this._transactionDate;

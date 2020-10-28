@@ -1,4 +1,4 @@
-# Section 4: Meu Dinheirinho App
+# Section 6: Meu Dinheirinho App
 
 This is the repository for the Flutter course ([Flutter and Dart - The Complete Guide](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/))
 In this section I'll be building an Expensive Tracker app, in which the user can input its expenses
@@ -25,6 +25,11 @@ Element Tree out of this Widget Tree that will be as an skeleton for the real Re
 works like an middle man between Widget tree and Render tree, this tree, holds memory reference to Widget trees and Render trees.
 
 ![Flutter Trees](./readme/flutter-trees.png?raw=true "Flutter Trees")
+
+## Widgets Lifecycle
+
+![Widgets Lifecycle](./readme/widgets-lifecycle.png?raw=true "Widgets Lifecycle")
+
 ## Sections
 
 The course sections / lessons will be organized as commits, for instance:
