@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meu_rango/pages/categories_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,31 +11,26 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Meu Rango',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        accentColor: Color.fromRGBO(255, 150, 154, 1),
+        primarySwatch: Colors.teal,
+        canvasColor: Colors.white,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              bodyText2: const TextStyle(
+                color: const Color.fromRGBO(20, 51, 51, 1),
+              ),
+              bodyText1: const TextStyle(
+                color: const Color.fromRGBO(20, 51, 51, 1),
+              ),
+              headline4:
+                  const TextStyle(fontFamily: 'RobotoCondensed', fontSize: 28),
+              headline6: const TextStyle(
+                fontFamily: 'RobotoCondensed',
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
       ),
-      home: HomePage(title: 'Meu Rango'),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  HomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Text(''),
+      home: CategoriesPage(),
     );
   }
 }
