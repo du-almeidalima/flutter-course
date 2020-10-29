@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         accentColor: Color.fromRGBO(255, 150, 154, 1),
         primarySwatch: Colors.teal,
-        canvasColor: Color.fromRGBO(240, 255, 249, 1),
+        canvasColor: Color.fromRGBO(235, 255, 235, 1),
         textTheme: ThemeData.light().textTheme.copyWith(
               bodyText2: const TextStyle(
                 color: const Color.fromRGBO(20, 51, 51, 1),

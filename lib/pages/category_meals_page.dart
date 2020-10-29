@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meu_rango/mock/meals_data.dart';
+import 'package:meu_rango/widgets/meal_item.dart';
 
 class CategoryMealsPage extends StatelessWidget {
   final String id;
@@ -26,7 +27,13 @@ class CategoryMealsPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: categoryMeals.length,
         itemBuilder: (context, index) {
-          return Text(categoryMeals[index].title);
+          final item = categoryMeals[index];
+          return MealItem(
+              title: item.title,
+              affordability: item.affordability,
+              imgUrl: item.imageUrl,
+              complexity: item.complexity,
+              duration: item.duration);
         },
       ),
     );
