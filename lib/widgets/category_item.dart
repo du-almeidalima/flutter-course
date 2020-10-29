@@ -13,7 +13,7 @@ class CategoryItem extends StatelessWidget {
     // resolve the route for us, Flutter will inject the arguments
     // into the ModalRoute object
     Navigator.of(context).pushNamed(
-      '/category-meals',
+      CategoryMealsPage.routeName,
       arguments: {'id': this.id, 'title': this.title},
     );
 

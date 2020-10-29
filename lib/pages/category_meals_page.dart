@@ -4,6 +4,7 @@ class CategoryMealsPage extends StatelessWidget {
   final String id;
   final String categoryTitle;
 
+  static const routeName = '/category-meals';
   const CategoryMealsPage({this.id, this.categoryTitle});
 
   @override

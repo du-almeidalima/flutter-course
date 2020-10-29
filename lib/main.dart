@@ -31,10 +31,13 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
+      // Home is already registered as "/" route
       home: CategoriesPage(),
+      // Already the default
+      initialRoute: "/",
       // In here we can register path to load pages on top of the Navigator Stack
       routes: {
-        '/category-meals': (ctx) => CategoryMealsPage(),
+        CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(),
       },
     );
   }
