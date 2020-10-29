@@ -31,14 +31,14 @@ class TransactionList extends StatelessWidget {
               )
             ],
           )
-        : ListView.builder(
-            itemCount: _userTransactions.length,
-            itemBuilder: (BuildContext context, int index) {
-              final transaction = this._userTransactions[index];
-              return TransactionListItem(
-                  transaction: transaction,
-                  deleteTransaction: _deleteTransaction);
-            },
+        : ListView(
+            children: this
+                ._userTransactions
+                .map((transaction) => TransactionListItem(
+                    key: ValueKey(transaction.id),
+                    transaction: transaction,
+                    deleteTransaction: _deleteTransaction))
+                .toList(),
           );
   }
 }
@@ -56,4 +56,15 @@ class TransactionList extends StatelessWidget {
  * But for using this Widget, we need to provide a itemBuilder function as a
  * named argument, that will build the List items based on the index of the
  * currently being loaded.
+ *
+ * The key is necessary when there is multiple StatefulWidgets in the same level
+ * and they can be dynamically arranged. Because when an item in the Element Tree
+ * is exclude, its state persists, so Flutter checks if the upcoming element is
+ * of the same Type and has the same Key, but if it doesn't have a Key, Flutter
+ * will only check or its type.
+ *
+ * Some types of key are:
+ * - UniqueKey: Will generate a unique every time it's called, not great for
+ * this type of lists, where wee need the key to match, even after another build
+ * - ValueKey: Generates a key with a constant value
  */

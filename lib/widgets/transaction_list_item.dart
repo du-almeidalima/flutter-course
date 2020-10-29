@@ -1,17 +1,42 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:meu_dinheirinho/model/transaction.dart';
 import 'package:meu_dinheirinho/shared/widgets/confirm_dialog.dart';
 
-class TransactionListItem extends StatelessWidget {
+class TransactionListItem extends StatefulWidget {
   const TransactionListItem({
     Key key,
     @required this.transaction,
     @required Function deleteTransaction,
-  }) : _deleteTransaction = deleteTransaction, super(key: key);
+  })  : _deleteTransaction = deleteTransaction,
+        super(key: key);
 
   final Transaction transaction;
   final Function _deleteTransaction;
+
+  @override
+  _TransactionListItemState createState() => _TransactionListItemState();
+}
+
+class _TransactionListItemState extends State<TransactionListItem> {
+  Color _bgColor;
+
+  @override
+  void initState() {
+    this._bgColor = [
+      Colors.red,
+      Colors.pinkAccent,
+      Colors.blue,
+      Colors.deepPurple,
+      Colors.green,
+      Colors.yellow,
+      Colors.black,
+    ][Random().nextInt(7)];
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +44,13 @@ class TransactionListItem extends StatelessWidget {
       margin: const EdgeInsets.all(5),
       child: ListTile(
         leading: CircleAvatar(
+          backgroundColor: this._bgColor,
           radius: 30,
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: FittedBox(
               child: Text(
-                '\$${transaction.amount.toStringAsFixed(2)}',
+                '\$${widget.transaction.amount.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -32,9 +58,9 @@ class TransactionListItem extends StatelessWidget {
             ),
           ),
         ),
-        title: Text(transaction.title),
-        subtitle: Text(
-            DateFormat.yMMMd('pt_BR').format(transaction.date)),
+        title: Text(widget.transaction.title),
+        subtitle:
+            Text(DateFormat.yMMMd('pt_BR').format(widget.transaction.date)),
         trailing: IconButton(
           icon: const Icon(
             Icons.delete_outline,
@@ -49,7 +75,7 @@ class TransactionListItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 confirm: () =>
-                    this._deleteTransaction(transaction.id));
+                    this.widget._deleteTransaction(widget.transaction.id));
           },
         ),
       ),
