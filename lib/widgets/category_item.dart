@@ -9,14 +9,21 @@ class CategoryItem extends StatelessWidget {
   const CategoryItem({this.id, this.title, this.color});
 
   void _onCategoryTapped(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (builderContext) => CategoryMealsPage(
-          id: this.id,
-          categoryTitle: this.title,
-        ),
-      ),
+    // Since we're not creating the Widget on the fly, but letting Flutter
+    // resolve the route for us, Flutter will inject the arguments
+    // into the ModalRoute object
+    Navigator.of(context).pushNamed(
+      '/category-meals',
+      arguments: {'id': this.id, 'title': this.title},
     );
+
+    // This will push this page on top of the NavigatorStack as an anonymous page
+    // Navigator.of(context).push(MaterialPageRoute(
+    //   builder: (builderContext) => CategoryMealsPage(
+    //     id: this.id,
+    //     categoryTitle: this.title,
+    //   ),
+    // ));
   }
 
   @override

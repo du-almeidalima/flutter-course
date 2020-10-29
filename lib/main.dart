@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meu_rango/pages/categories_page.dart';
+import 'package:meu_rango/pages/category_meals_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,6 +32,10 @@ class MyApp extends StatelessWidget {
             ),
       ),
       home: CategoriesPage(),
+      // In here we can register path to load pages on top of the Navigator Stack
+      routes: {
+        '/category-meals': (ctx) => CategoryMealsPage(),
+      },
     );
   }
 }
