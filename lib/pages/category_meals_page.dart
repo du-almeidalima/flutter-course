@@ -29,6 +29,7 @@ class CategoryMealsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final item = categoryMeals[index];
           return MealItem(
+              id: item.id,
               title: item.title,
               affordability: item.affordability,
               imgUrl: item.imageUrl,

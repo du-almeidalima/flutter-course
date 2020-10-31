@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meu_rango/models/meal.dart';
+import 'package:meu_rango/pages/meal_details_page.dart';
 
 class MealItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imgUrl;
   final int duration;
@@ -34,19 +36,28 @@ class MealItem extends StatelessWidget {
     }
   }
 
-  const MealItem(
-      {this.title,
-      this.imgUrl,
-      this.duration,
-      this.complexity,
-      this.affordability});
+  const MealItem({
+    this.title,
+    this.imgUrl,
+    this.duration,
+    this.complexity,
+    this.affordability,
+    this.id,
+  });
 
-  void _onMealTapped() {}
+  void _onMealTapped(BuildContext context) {
+    Navigator.of(context).pushNamed(
+      MealDetailsPage.routeName,
+      arguments: this.id,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: this._onMealTapped,
+      onTap: () {
+        this._onMealTapped(context);
+      },
       child: Card(
         elevation: 4,
         margin: const EdgeInsets.all(10),
@@ -82,12 +93,12 @@ class MealItem extends StatelessWidget {
                       vertical: 5,
                       horizontal: 20,
                     ),
-                    color: Colors.black54,
+                    color: Color.fromRGBO(255, 245, 234, 0.8),
                     child: Text(
                       this.title,
                       style: const TextStyle(
                         fontSize: 26,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       textAlign: TextAlign.end,
                       softWrap: true,
