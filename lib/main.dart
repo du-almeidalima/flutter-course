@@ -41,6 +41,20 @@ class MyApp extends StatelessWidget {
         CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(),
         MealDetailsPage.routeName: (ctx) => MealDetailsPage()
       },
+      // Is called when a named route is not present in the routes table, above.
+      onGenerateRoute: (settings) {
+        print(settings.name);
+        return MaterialPageRoute(
+          builder: (ctx) => CategoryMealsPage(),
+        );
+      },
+      // This is reached whe the route that is being called doesn't exists on
+      // routes Table neither onGenerateRoute, this is the last step before
+      // Flutter throws an error
+      onUnknownRoute: (settings) {
+        print('Unknown route reached');
+        return MaterialPageRoute(builder: (ctx) => Text('Unknown Route!'));
+      },
     );
   }
 }
