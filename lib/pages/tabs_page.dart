@@ -8,46 +8,63 @@ class TabsPage extends StatefulWidget {
 }
 
 class _TabsPageState extends State<TabsPage> {
-  List<Widget> tabs = [
-    Tab(
-      icon: Icon(Icons.category),
-      text: "Categoria",
-    ),
-    Tab(
-      icon: Icon(Icons.star),
-      text: "Favoritos",
-    )
+  final List<Map<String, Object>> _pages = [
+    { 'page': CategoriesPage(), 'title': 'Categorias'},
+    { 'page': FavoritesPage(), 'title': 'Favoritos'},
   ];
+
+  int selectedPageIndex = 0;
+
+  void _selectPage(int index) {
+    setState(() {
+      this.selectedPageIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      // Amount of tabs
-      length: tabs.length,
-      initialIndex: 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Center(
-            child: Text("Meu Rango"),
-          ),
-          bottom: TabBar(
-            tabs: tabs,
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text(this._pages[this.selectedPageIndex]['title']),
         ),
-        body: TabBarView(
-          children: [CategoriesPage(), FavoritesPage()],
-        ),
+      ),
+      body: this._pages[this.selectedPageIndex]['page'],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
+        unselectedItemColor: Colors.white54,
+        selectedItemColor: Theme
+            .of(context)
+            .accentColor,
+        currentIndex: this.selectedPageIndex,
+        // When use BottomNavigationBarType.shifting it's needed to style the
+        // BottomNavigationBarItem manually
+        type: BottomNavigationBarType.shifting,
+        onTap: this._selectPage,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: Theme
+                .of(context)
+                .primaryColor,
+            icon: Icon(Icons.category),
+            label: "Categoria",
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme
+                .of(context)
+                .primaryColor,
+            icon: Icon(Icons.star),
+            label: "Favoritos",
+          )
+        ],
       ),
     );
   }
 }
 
 /*
- * The DefaultTabController is connected to the TabBar to work together, to
- * detect which tab the user has selected by loading the provided page in the
- * TabBarView.
- *
- * The page will be loaded into the TabBarView, but it's important to notice
- * that it would be a standalone page anymore, it will be inserted into the
- * TabsPage, so it shouldn't have a Scaffold.
+ * BottomNavigationBar allow us to create a TabBar on the bottom, but it works
+ * a little different of TabBar, here we need to do things a little more manually
  */
