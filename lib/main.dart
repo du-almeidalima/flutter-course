@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meu_rango/pages/categories_page.dart';
 import 'package:meu_rango/pages/category_meals_page.dart';
 import 'package:meu_rango/pages/meal_details_page.dart';
+import 'package:meu_rango/pages/tabs_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             ),
       ),
       // Home is already registered as "/" route
-      home: CategoriesPage(),
+      home: TabsPage(),
       // Already the default
       initialRoute: "/",
       // In here we can register path to load pages on top of the Navigator Stack
