@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meu_rango/pages/categories_page.dart';
 import 'package:meu_rango/pages/category_meals_page.dart';
 import 'package:meu_rango/pages/filters_page.dart';
 import 'package:meu_rango/pages/meal_details_page.dart';

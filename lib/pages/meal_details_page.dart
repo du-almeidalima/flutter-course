@@ -107,6 +107,17 @@ class MealDetailsPage extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          // We can pass data to pop method and subscribe to it in the function
+          // that called the popped page
+          Navigator.of(context).pop(mealId);
+        },
+      ),
     );
   }
 }

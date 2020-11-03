@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:meu_rango/pages/category_meals_page.dart';
 import 'package:meu_rango/pages/filters_page.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -38,10 +37,10 @@ class MainDrawer extends StatelessWidget {
             ),
           ),
           this.buildListTile(Icons.restaurant, "Receitas", () {
-            Navigator.of(context).pushNamed('/');
+            Navigator.of(context).pushReplacementNamed('/');
           }),
           this.buildListTile(Icons.settings, "Filtros", () {
-            Navigator.of(context).pushNamed(FiltersPage.routeName);
+            Navigator.of(context).pushReplacementNamed(FiltersPage.routeName);
           }),
         ],
       ),

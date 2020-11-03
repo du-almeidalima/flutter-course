@@ -9,6 +9,7 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
+  final void Function(String) onItemExcluded;
 
   String get _translatedComplexity {
     switch (this.complexity) {
@@ -37,19 +38,25 @@ class MealItem extends StatelessWidget {
   }
 
   const MealItem({
-    this.title,
-    this.imgUrl,
-    this.duration,
-    this.complexity,
-    this.affordability,
-    this.id,
+    @required this.title,
+    @required this.imgUrl,
+    @required this.duration,
+    @required this.complexity,
+    @required this.affordability,
+    @required this.id,
+    @required this.onItemExcluded
   });
 
   void _onMealTapped(BuildContext context) {
     Navigator.of(context).pushNamed(
       MealDetailsPage.routeName,
       arguments: this.id,
-    );
+    ).then((excludedMealId) {
+      // Handling the pop of the pushed route
+      if (excludedMealId != null) {
+        onItemExcluded(excludedMealId);
+      }
+    });
   }
 
   @override
