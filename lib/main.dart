@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meu_rango/mock/meals_data.dart';
+import 'package:meu_rango/models/meal.dart';
 import 'package:meu_rango/pages/category_meals_page.dart';
 import 'package:meu_rango/pages/filters_page.dart';
 import 'package:meu_rango/pages/meal_details_page.dart';
@@ -8,7 +10,42 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'lactose': false,
+    'vegetarian': false,
+    'vegan': false
+  };
+
+  List<Meal> _availableMeals = DUMMY_MEALS;
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      this._filters = filterData;
+      this._availableMeals = DUMMY_MEALS.where((m) {
+        if (this._filters['gluten'] && !m.isGlutenFree) {
+          return false;
+        }
+        if (this._filters['lactose'] && !m.isLactoseFree) {
+          return false;
+        }
+        if (this._filters['vegetarian'] && !m.isVegetarian) {
+          return false;
+        }
+        if (this._filters['vegan'] && !m.isVegan) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,15 +77,20 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       // In here we can register path to load pages on top of the Navigator Stack
       routes: {
-        CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(),
+        CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(
+              this._availableMeals,
+            ),
         MealDetailsPage.routeName: (ctx) => MealDetailsPage(),
-        FiltersPage.routeName: (ctx) => FiltersPage(),
+        FiltersPage.routeName: (ctx) => FiltersPage(
+              saveFilters: this._setFilters,
+              filters: this._filters,
+            )
       },
       // Is called when a named route is not present in the routes table, above.
       onGenerateRoute: (settings) {
         print(settings.name);
         return MaterialPageRoute(
-          builder: (ctx) => CategoryMealsPage(),
+          builder: (ctx) => CategoryMealsPage(this._availableMeals),
         );
       },
       // This is reached whe the route that is being called doesn't exists on

@@ -5,8 +5,9 @@ import 'package:meu_rango/widgets/meal_item.dart';
 
 class CategoryMealsPage extends StatefulWidget {
   static const routeName = '/category-meals';
+  final List<Meal> categoryMeals;
 
-  const CategoryMealsPage();
+  const CategoryMealsPage(this.categoryMeals);
 
   @override
   _CategoryMealsPageState createState() => _CategoryMealsPageState();
@@ -30,7 +31,7 @@ class _CategoryMealsPageState extends State<CategoryMealsPage> {
       ModalRoute.of(context).settings.arguments as Map<String, String>;
       final categoryId = routeArgs['id'];
       categoryTitle = routeArgs['title'];
-      categoryMeals = DUMMY_MEALS
+      categoryMeals = widget.categoryMeals
           .where((meal) => meal.categoriesList.any((id) => categoryId == id))
           .toList();
 

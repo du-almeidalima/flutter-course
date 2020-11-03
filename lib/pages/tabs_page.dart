@@ -33,7 +33,7 @@ class _TabsPageState extends State<TabsPage> {
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.white54,
-        selectedItemColor: Theme.of(context).accentColor,
+        selectedItemColor: Colors.white,
         currentIndex: this.selectedPageIndex,
         // When use BottomNavigationBarType.shifting it's needed to style the
         // BottomNavigationBarItem manually
@@ -42,12 +42,12 @@ class _TabsPageState extends State<TabsPage> {
         items: [
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
-            icon: Icon(Icons.category),
+            icon: const Icon(Icons.category),
             label: "Categoria",
           ),
           BottomNavigationBarItem(
             backgroundColor: Theme.of(context).primaryColor,
-            icon: Icon(Icons.star),
+            icon: const Icon(Icons.star),
             label: "Favoritos",
           )
         ],
