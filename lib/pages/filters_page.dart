@@ -6,6 +6,7 @@ class FiltersPage extends StatefulWidget {
 
   final Function saveFilters;
   final Map<String, bool> filters;
+
   const FiltersPage({@required this.saveFilters, this.filters});
 
   @override
@@ -18,7 +19,6 @@ class _FiltersPageState extends State<FiltersPage> {
   bool _vegan;
   bool _lactoseFree;
 
-
   @override
   void initState() {
     super.initState();
@@ -28,8 +28,8 @@ class _FiltersPageState extends State<FiltersPage> {
     this._vegan = widget.filters['vegan'];
   }
 
-  Widget _buildSwitchTile(
-      String title, String subtitle, bool value, void valueChanged(bool)) {
+  Widget _buildSwitchTile(String title, String subtitle, bool value,
+      void valueChanged(bool)) {
     return SwitchListTile(
       title: Text(title),
       subtitle: Text(subtitle),
@@ -40,22 +40,42 @@ class _FiltersPageState extends State<FiltersPage> {
     );
   }
 
+  void _showSavedMessage(BuildContext context) {
+    final snackBar = SnackBar(
+      content: Text('Filtros salvos.'),
+      margin: EdgeInsets.all(20),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.lightGreen,
+      action: SnackBarAction(
+        label: 'Fechar',
+        onPressed: () {
+          Scaffold.of(context).hideCurrentSnackBar();
+        },
+      ),
+    );
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Filtros'),
         actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () => {
-              widget.saveFilters({
-                'gluten': this._glutenFree,
-                'lactose': this._lactoseFree,
-                'vegetarian': this._vegetarian,
-                'vegan': this._vegan
-              })
-            },
+          Builder(
+            builder: (ctx) =>
+                IconButton(
+                  icon: Icon(Icons.save),
+                  onPressed: () {
+                    widget.saveFilters({
+                      'gluten': this._glutenFree,
+                      'lactose': this._lactoseFree,
+                      'vegetarian': this._vegetarian,
+                      'vegan': this._vegan
+                    });
+                    this._showSavedMessage(ctx);
+                  },
+                ),
           )
         ],
       ),
@@ -66,7 +86,10 @@ class _FiltersPageState extends State<FiltersPage> {
             padding: EdgeInsets.all(20),
             child: Text(
               'Ajust suas preferências',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline6,
             ),
           ),
           Expanded(
@@ -76,7 +99,7 @@ class _FiltersPageState extends State<FiltersPage> {
                   'Sem Glúten',
                   'Incluir somente refeições sem glúten',
                   this._glutenFree,
-                  (value) {
+                      (value) {
                     setState(() {
                       this._glutenFree = value;
                     });
@@ -86,7 +109,7 @@ class _FiltersPageState extends State<FiltersPage> {
                   'Vegetariana',
                   'Incluir somente refeições sem vegetariana',
                   this._vegetarian,
-                  (value) {
+                      (value) {
                     setState(() {
                       this._vegetarian = value;
                     });
@@ -96,7 +119,7 @@ class _FiltersPageState extends State<FiltersPage> {
                   'Vegana',
                   'Incluir somente refeições veganas',
                   this._vegan,
-                  (value) {
+                      (value) {
                     setState(() {
                       this._vegan = value;
                     });
@@ -106,7 +129,7 @@ class _FiltersPageState extends State<FiltersPage> {
                   'Sem Lactose',
                   'Incluir somente refeições sem lactos',
                   this._lactoseFree,
-                  (value) {
+                      (value) {
                     setState(() {
                       this._lactoseFree = value;
                     });
