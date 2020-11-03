@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meu_rango/pages/categories_page.dart';
 import 'package:meu_rango/pages/category_meals_page.dart';
+import 'package:meu_rango/pages/filters_page.dart';
 import 'package:meu_rango/pages/meal_details_page.dart';
 import 'package:meu_rango/pages/tabs_page.dart';
 
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
       // In here we can register path to load pages on top of the Navigator Stack
       routes: {
         CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(),
-        MealDetailsPage.routeName: (ctx) => MealDetailsPage()
+        MealDetailsPage.routeName: (ctx) => MealDetailsPage(),
+        FiltersPage.routeName: (ctx) => FiltersPage(),
       },
       // Is called when a named route is not present in the routes table, above.
       onGenerateRoute: (settings) {
