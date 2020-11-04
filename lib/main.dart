@@ -24,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -44,6 +45,23 @@ class _MyAppState extends State<MyApp> {
         return true;
       }).toList();
     });
+  }
+
+  void _toggleFavoriteMeal(String mealId) {
+    final mealIndex = this._favoriteMeals.indexWhere((m) => m.id == mealId);
+    if (mealIndex < 0) {
+      setState(() {
+        _favoriteMeals.add(DUMMY_MEALS.firstWhere((m) => m.id == mealId));
+      });
+    } else {
+      setState(() {
+        _favoriteMeals.removeWhere((m) => m.id == mealId);
+      });
+    }
+  }
+
+  bool _isMealFavorite(String mealId) {
+    return this._favoriteMeals.any((m) => m.id == mealId);
   }
 
   @override
@@ -72,7 +90,9 @@ class _MyAppState extends State<MyApp> {
             ),
       ),
       // Home is already registered as "/" route
-      home: TabsPage(),
+      home: TabsPage(
+        favoriteMeals: this._favoriteMeals,
+      ),
       // Already the default
       initialRoute: "/",
       // In here we can register path to load pages on top of the Navigator Stack
@@ -80,11 +100,14 @@ class _MyAppState extends State<MyApp> {
         CategoryMealsPage.routeName: (ctx) => CategoryMealsPage(
               this._availableMeals,
             ),
-        MealDetailsPage.routeName: (ctx) => MealDetailsPage(),
+        MealDetailsPage.routeName: (ctx) => MealDetailsPage(
+              this._toggleFavoriteMeal,
+              this._isMealFavorite,
+            ),
         FiltersPage.routeName: (ctx) => FiltersPage(
               saveFilters: this._setFilters,
               filters: this._filters,
-            )
+            ),
       },
       // Is called when a named route is not present in the routes table, above.
       onGenerateRoute: (settings) {

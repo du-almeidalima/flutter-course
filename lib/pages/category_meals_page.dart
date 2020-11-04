@@ -41,11 +41,11 @@ class _CategoryMealsPageState extends State<CategoryMealsPage> {
     super.didChangeDependencies();
   }
 
-  _onMealDeleted(String mealId) {
-    this.setState(() {
-      this.categoryMeals = categoryMeals.where((m) => m.id != mealId).toList();
-    });
-  }
+  // _onMealDeleted(String mealId) {
+  //   this.setState(() {
+  //     this.categoryMeals = categoryMeals.where((m) => m.id != mealId).toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +63,7 @@ class _CategoryMealsPageState extends State<CategoryMealsPage> {
             affordability: item.affordability,
             imgUrl: item.imageUrl,
             complexity: item.complexity,
-            duration: item.duration,
-            onItemExcluded: this._onMealDeleted,
+            duration: item.duration
           );
         },
       ),

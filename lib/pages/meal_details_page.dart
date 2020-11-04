@@ -4,6 +4,11 @@ import 'package:meu_rango/mock/meals_data.dart';
 class MealDetailsPage extends StatelessWidget {
   static const routeName = '/meal-details';
 
+  final void Function(String) _onFavoriteMealToggle;
+  final bool Function(String) _isMealFavorite;
+
+  MealDetailsPage(this._onFavoriteMealToggle, this._isMealFavorite);
+
   Widget buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
@@ -34,7 +39,7 @@ class MealDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final mealId = ModalRoute.of(context).settings.arguments;
+    final mealId = ModalRoute.of(context).settings.arguments as String;
     final meal = DUMMY_MEALS.firstWhere((m) => m.id == mealId);
 
     return Scaffold(
@@ -108,14 +113,20 @@ class MealDetailsPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.delete,
-          color: Colors.white,
-        ),
+        child: this._isMealFavorite(mealId)
+            ? Icon(
+                Icons.favorite,
+                color: Colors.white,
+              )
+            : Icon(
+                Icons.favorite_border_outlined,
+                color: Colors.white,
+              ),
         onPressed: () {
           // We can pass data to pop method and subscribe to it in the function
           // that called the popped page
-          Navigator.of(context).pop(mealId);
+          // Navigator.of(context).pop(mealId);
+          this._onFavoriteMealToggle(mealId);
         },
       ),
     );
