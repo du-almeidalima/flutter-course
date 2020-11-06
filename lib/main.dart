@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopps/screens/products_overview_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,25 +14,22 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ProductsOverviewScreen(),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+// class MyHomePage extends StatelessWidget {
+//   MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
+//   final String title;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Shopts'),
-      ),
-      body: Center(
-        child: Text('Heey Dude!'),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Shopts'),
+//       ),
+//     );
+//   }
+// }
