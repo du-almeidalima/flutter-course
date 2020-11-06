@@ -1,4 +1,4 @@
-package com.dualmeidalima.meu_rango
+package com.example.shopps
 
 import io.flutter.embedding.android.FlutterActivity
 
