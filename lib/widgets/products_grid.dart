@@ -21,9 +21,12 @@ class ProductsGrid extends StatelessWidget {
           mainAxisSpacing: 10),
       itemBuilder: (ctx, i) {
         return Container(
-          child: ChangeNotifierProvider(
-            // Creating the Product provider for each Product
-            create: (ctx) => productsList[i],
+          // Creating the Product provider for each Product
+          child: ChangeNotifierProvider.value(
+            // If the state doesn't use context, we can use this syntax.
+            // Also, this syntax is ideal for list/grid items, as it prevents
+            // Bugs similar to list items without Keys
+            value: productsList[i],
             // ProductItem will get its values via
             child: ProductItem(),
           ),
@@ -40,4 +43,9 @@ class ProductsGrid extends StatelessWidget {
  * 
  * This is usefull when you want that each item of the list reacts to change,
  * not the list as a whole.
+ * 
+ * Notes to ChangeNotifierProvider constructor. When using a value that is being
+ * instanciated, such as in the main.dart file, it's better to use the
+ * ChangeNotifierProvider() constructor. However, for values that are already
+ * instanciated, it's better to use the ChangeNotifierProvider.value() approach
  */
