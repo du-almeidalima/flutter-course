@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shopps/models/product.model.dart';
+import 'package:provider/provider.dart';
+import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/widgets/product_item.dart';
 
 class ProductsGrid extends StatelessWidget {
@@ -19,16 +20,24 @@ class ProductsGrid extends StatelessWidget {
           crossAxisSpacing: 5,
           mainAxisSpacing: 10),
       itemBuilder: (ctx, i) {
-        final product = this.productsList[i];
-
         return Container(
-          child: ProductItem(
-            id: product.id,
-            title: product.title,
-            imgUrl: product.imageUrl,
+          child: ChangeNotifierProvider(
+            // Creating the Product provider for each Product
+            create: (ctx) => productsList[i],
+            // ProductItem will get its values via
+            child: ProductItem(),
           ),
         );
       },
     );
   }
 }
+
+/*
+ * In here we're using two ChangeNotifier classes the Products and the Product.
+ * The Products Notifier will handle changes in the list as a whole,
+ * the Product Notifier will handle changes in the product favorite proerty.
+ * 
+ * This is usefull when you want that each item of the list reacts to change,
+ * not the list as a whole.
+ */
