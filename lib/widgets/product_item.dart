@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/screens/product_detail_screen.dart';
 
@@ -7,22 +8,23 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Reaching to parent to find a instance of Product that has a ChangeNotifier
-    final product = Provider.of<Product>(context, listen: false);
+    final productProvider = Provider.of<Product>(context, listen: false);
+    final cartProvider = Provider.of<Cart>(context, listen: false);
 
-    print('Product ${product.title} build');
+    print('Product ${productProvider.title} build');
 
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
           ProductDetailScreen.routeName,
-          arguments: product.id,
+          arguments: productProvider.id,
         );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: GridTile(
           child: Image.network(
-            product.imageUrl,
+            productProvider.imageUrl,
             fit: BoxFit.cover,
           ),
           footer: GridTileBar(
@@ -42,12 +44,14 @@ class ProductItem extends StatelessWidget {
               ),
             ),
             title: Text(
-              product.title,
+              productProvider.title,
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                cartProvider.add(productProvider);
+              },
             ),
           ),
         ),
