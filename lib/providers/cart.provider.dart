@@ -25,28 +25,38 @@ class Cart with ChangeNotifier {
       return 0;
     }
 
-    return this._cartItems.entries.fold(0, (acc, cur){
+    return this._cartItems.entries.fold(0, (acc, cur) {
       return acc + this._cartItems[cur.key].quantity;
+    });
+  }
+
+  double get totalAmount {
+    if (this._cartItems.isEmpty) {
+      return 0;
+    }
+
+    return this._cartItems.values.fold(0.0, (acc, cur) {
+      return acc + (cur.quantity * cur.product.price);
     });
   }
 
   void add(Product product) {
     if (this._cartItems.containsKey(product.id)) {
       this._cartItems.update(
-        product.id,
-        (oldCartItem) => CartItem(
-          id: oldCartItem.id,
-          quantity: oldCartItem.quantity + 1,
-          product: product,
-        ),
-      );
+            product.id,
+            (oldCartItem) => CartItem(
+              id: oldCartItem.id,
+              quantity: oldCartItem.quantity + 1,
+              product: product,
+            ),
+          );
     } else {
       final cartId = '${DateTime.now()}_${product.id}';
 
       this._cartItems.putIfAbsent(
-        product.id,
-        () => CartItem(id: cartId, quantity: 1, product: product),
-      );
+            product.id,
+            () => CartItem(id: cartId, quantity: 1, product: product),
+          );
     }
     notifyListeners();
   }
