@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
+import 'package:shopps/widgets/cart_list_item.dart';
 
 class CartScreen extends StatelessWidget {
   static const String routeName = 'cart';
@@ -46,6 +47,21 @@ class CartScreen extends StatelessWidget {
                   )
                 ],
               ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          // The Column expand to the need of its children, an ListView, has an infinte
+          // Height, so in order to prevent overflow we can wrap it into the Expanded,
+          // Which gives the remaining available space
+          Expanded(
+            child: ListView.builder(
+              itemCount: cartProvider.cartItems.length,
+              itemBuilder: (ctx, i) {
+                final item = cartProvider.cartItems.values.toList()[i];
+                return CartListItem(item);
+              },
             ),
           )
         ],
