@@ -61,8 +61,8 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  void remove(Product product) {
-    this._cartItems.remove(product.id);
+  void remove(String productId) {
+    this._cartItems.remove(productId);
     notifyListeners();
   }
 }
