@@ -54,4 +54,9 @@ class Products with ChangeNotifier {
     this._products.add(product);
     notifyListeners();
   }
+
+  void favoriteProduct(String id) {
+    this._products.firstWhere((p) => p.id == id).toggleFavorite();
+    notifyListeners();
+  }
 }
