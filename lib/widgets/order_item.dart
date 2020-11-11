@@ -15,7 +15,7 @@ class OrderItem extends StatelessWidget {
           ListTile(
             title: Text('\$${this.orderItem.total}'),
             subtitle: Text(
-              DateFormat('dd MM yyyy, hh:mm').format(this.orderItem.date),
+              DateFormat('dd/MM/yyyy, hh:mm').format(this.orderItem.date),
             ),
             trailing: IconButton(
               icon: Icon(Icons.expand_more),
