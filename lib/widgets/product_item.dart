@@ -51,6 +51,23 @@ class ProductItem extends StatelessWidget {
               icon: Icon(Icons.shopping_cart),
               onPressed: () {
                 cartProvider.add(productProvider);
+                // Get the nearest element that is controlling the screen, through the
+                // Context
+                Scaffold.of(context).hideCurrentSnackBar();
+                Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Item successfuly added to cart.'),
+                    duration: Duration(seconds: 2),
+                    backgroundColor: Colors.green,
+                    action: SnackBarAction(
+                      label: 'UNDO',
+                      textColor: Colors.black87,
+                      onPressed: () {
+                        cartProvider.removeOneItem(productProvider.id);
+                      },
+                    ),
+                  ),
+                );
               },
             ),
           ),

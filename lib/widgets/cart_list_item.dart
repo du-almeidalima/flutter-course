@@ -45,7 +45,7 @@ class CartListItem extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          subtitle: Text('Unit: \$${this.item.product.price}'),
+          subtitle: Text('Unit: \$${this.item.product.price.toStringAsFixed(2)}'),
           trailing: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.end,
