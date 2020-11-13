@@ -23,12 +23,17 @@ class MainDrawer extends StatelessWidget {
       child: Column(
         children: [
           AppBar(
-            title: const Text(
-              'Shopps',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+            title: GestureDetector(
+              child: const Text(
+                'Shopps',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
+              onTap: () {
+                Navigator.of(context).pushReplacementNamed('/');
+              },
             ),
             automaticallyImplyLeading: false,
           ),

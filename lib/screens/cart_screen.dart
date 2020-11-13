@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/orders.provider.dart';
 import 'package:shopps/widgets/cart_list_item.dart';
+import 'package:shopps/widgets/main_drawer.dart';
 
 class CartScreen extends StatelessWidget {
   static const String routeName = 'cart';
@@ -73,6 +74,7 @@ class CartScreen extends StatelessWidget {
           )
         ],
       ),
+      drawer: MainDrawer(),
     );
   }
 }
