@@ -1,11 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopps/providers/product.provider.dart';
+import 'package:shopps/providers/products.provider.dart';
 import 'package:shopps/screens/edit-product-screen.dart';
 
 class UserProductItem extends StatelessWidget {
   final Product product;
 
   const UserProductItem(this.product);
+
+  AlertDialog buildConfirmDialog(
+      BuildContext parentCtx, BuildContext builderCtx) {
+    return AlertDialog(
+      title: const Text(
+        'Are you sure you want to Delete this item?',
+        textAlign: TextAlign.center,
+      ),
+      content: const Text(
+        'This action will remove the item and it can\'t be undone',
+      ),
+      actions: <Widget>[
+        FlatButton(
+          onPressed: () {
+            Navigator.of(builderCtx).pop(false);
+          },
+          child: const Text(
+            'No',
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.of(builderCtx).pop(true);
+          },
+          child: const Text('Yes'),
+          color: Theme.of(parentCtx).accentColor,
+        )
+      ],
+    );
+  }
+
+  void onProductDelete(BuildContext context, String productId) {
+    showDialog(
+      context: context,
+      builder: (ctx) => this.buildConfirmDialog(context, ctx),
+    ).then((result) {
+      if(result) {
+        Provider.of<Products>(context, listen: false).delete(productId);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +104,9 @@ class UserProductItem extends StatelessWidget {
                                   ),
                                 ),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    this.onProductDelete(context, this.product.id);
+                                  },
                                   icon: const Icon(Icons.delete),
                                   iconSize: 18,
                                   constraints: BoxConstraints.tight(

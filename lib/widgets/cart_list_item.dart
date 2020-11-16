@@ -7,10 +7,11 @@ class CartListItem extends StatelessWidget {
 
   const CartListItem(this.item);
 
-  AlertDialog buildConfirmDialog(BuildContext parentCtx, BuildContext builderCtx) {
+  AlertDialog buildConfirmDialog(
+      BuildContext parentCtx, BuildContext builderCtx) {
     return AlertDialog(
       title: const Text(
-        'Are you sure you want to Delet this Order?',
+        'Are you sure you want to Delete this Order?',
         textAlign: TextAlign.center,
       ),
       content: const Text(
@@ -48,8 +49,9 @@ class CartListItem extends StatelessWidget {
       },
       confirmDismiss: (direction) {
         return showDialog(
-            context: context,
-            builder: (ctx) => buildConfirmDialog(context, ctx));
+          context: context,
+          builder: (ctx) => buildConfirmDialog(context, ctx),
+        );
       },
       background: Container(
         color: Colors.red[400],
