@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopps/providers/product.provider.dart';
+import 'package:shopps/screens/edit-product-screen.dart';
 
 class UserProductItem extends StatelessWidget {
   final Product product;
@@ -46,7 +47,12 @@ class UserProductItem extends StatelessWidget {
                             Wrap(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                      EditProductScreen.routeName,
+                                      arguments: this.product,
+                                    );
+                                  },
                                   icon: const Icon(Icons.edit),
                                   iconSize: 18,
                                   constraints: BoxConstraints.tight(

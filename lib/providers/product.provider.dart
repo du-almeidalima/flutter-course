@@ -23,7 +23,7 @@ class Product with ChangeNotifier {
       title: '',
       description: '',
       imageUrl: '',
-      price: 0.0,
+      price: null,
       isFavorite: false,
     );
   }

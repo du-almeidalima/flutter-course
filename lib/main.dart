@@ -53,7 +53,17 @@ class MyApp extends StatelessWidget {
           CartScreen.routeName: (ctx) => CartScreen(),
           OrdersScreen.routeName: (ctx) => OrdersScreen(),
           UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
-          EditProductScreen.routeName: (ctx) => EditProductScreen(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          // I'm using this approach so I can pass the Product ID. When using just a norm
+          // route, we can't get the ModalRoute from initState. But in here, we can get it
+          // Thanks to RouteSettings parameter
+          final Map<String, WidgetBuilder> routes = {
+            EditProductScreen.routeName: (ctx) =>
+                EditProductScreen(product: settings.arguments),
+          };
+
+          return MaterialPageRoute(builder: routes[settings.name]);
         },
       ),
     );

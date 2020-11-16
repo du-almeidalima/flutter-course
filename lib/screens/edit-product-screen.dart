@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/providers/products.provider.dart';
-import 'package:shopps/screens/products_overview_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const String routeName = '/edit-product';
+
+  final Product product;
+
+  const EditProductScreen({this.product});
 
   @override
   _EditProductScreenState createState() => _EditProductScreenState();
@@ -21,11 +24,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
   // A GlobalKey is useful for tackling into the State of another Widget
   final _form = GlobalKey<FormState>();
 
-  var _editedProduct = Product.empty();
+  var _editedProduct;
 
   @override
   void initState() {
     super.initState();
+    if (widget.product != null) {
+      _editedProduct = widget.product.copyWith();
+      // Because imageUrl doesn't have initial value, instead it has a controller
+      _productImageUrlController.text = _editedProduct.imageUrl;
+    } else {
+      this._editedProduct = Product.empty();
+    }
+
     // This listener is triggered verytime the Focus changes
     this._productImageUrlFocusNode.addListener(this._updateImageUrl);
   }
@@ -55,11 +66,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
-    this._form.currentState.validate();
-    // This will trigger every control inside this form
+    if(!this._form.currentState.validate()){
+      return;
+    }
+
+    // This will trigger onSaved in every control inside this form
     this._form.currentState.save();
 
-    Provider.of<Products>(context, listen: false).add(this._editedProduct);
+    if(this._editedProduct.id == null) {
+      Provider.of<Products>(context, listen: false).add(this._editedProduct);
+    } else {
+      Provider.of<Products>(context, listen: false).update(this._editedProduct);
+    }
+
     Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
   }
 
@@ -132,6 +151,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: Column(
               children: [
                 TextFormField(
+                  initialValue: this._editedProduct.title,
                   decoration: const InputDecoration(labelText: 'Title'),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
@@ -145,6 +165,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   validator: this.validateEmpty,
                 ),
                 TextFormField(
+                  initialValue: this._editedProduct.price != null
+                      ? this._editedProduct.price.toString()
+                      : null,
                   decoration: const InputDecoration(labelText: 'Price'),
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
@@ -161,6 +184,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   validator: this.validatePrice,
                 ),
                 TextFormField(
+                  initialValue: this._editedProduct.description,
                   maxLines: 3,
                   decoration: const InputDecoration(labelText: 'Description'),
                   keyboardType: TextInputType.multiline,
@@ -178,6 +202,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     // Children
                     Expanded(
                       child: TextFormField(
+                        // Can't set initialValue and controller at the same time
+                        // initialValue: this._editedProduct.imageUrl,
                         decoration: const InputDecoration(
                             labelText: 'Product Image URL'),
                         keyboardType: TextInputType.url,

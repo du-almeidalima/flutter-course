@@ -65,6 +65,14 @@ class Products with ChangeNotifier {
     notifyListeners();
   }
 
+  void update(Product product) {
+    final index = this._products.indexWhere((p) => p.id == product.id);
+    if(index >= 0) {
+      this._products[index] = product;
+      notifyListeners();
+    }
+  }
+
   void favoriteProduct(String id) {
     this._products.firstWhere((p) => p.id == id).toggleFavorite();
     notifyListeners();
