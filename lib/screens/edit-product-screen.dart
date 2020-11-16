@@ -39,26 +39,69 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void _updateImageUrl() {
     // Checking if it lost focus
     if (!this._productImageUrlFocusNode.hasFocus) {
-      // Marking the widget to repaint
-      setState(() {});
+      if (this._productImageUrlController.text.isEmpty) {
+        // Marking the widget to repaint
+        setState(() {});
+      } else if (this.validateImageUrl(_productImageUrlController.text) ==
+          null) {
+        return;
+      }
     }
   }
 
   void _saveForm() {
+    this._form.currentState.validate();
     // This will trigger every control inside this form
     this._form.currentState.save();
     print(this._editedProduct.toString());
   }
 
+  String validateEmpty(String value) {
+    if (value.isEmpty) {
+      return "This field is required";
+    }
+
+    return null;
+  }
+
+  String validatePrice(String value) {
+    if (this.validateEmpty(value) == null) {
+      if (double.tryParse(value) == null) {
+        return 'Please enter a valid number';
+      }
+      if (double.parse(value) < 0) {
+        return 'Please enter a number greater than zero';
+      }
+
+      return null;
+    }
+
+    return "This field is required";
+  }
+
+  String validateImageUrl(String value) {
+    if(value.isEmpty) {
+      return 'This field is required';
+    }
+
+    if (!value.startsWith('https') && !value.startsWith('http')) {
+      return 'Please enter a valid link';
+    }
+
+    if (!value.contains(RegExp('\.(?:png|jpg|jpeg|bmp)'))) {
+      return 'Please enter a valid image URL.';
+    }
+
+    return null;
+  }
+
   Widget buildImageOrText() {
     final value = this._productImageUrlController.text;
     return value.isEmpty
-        ? Text('Enter a URL')
+        ? Center(child: Text('Enter a URL'))
         : FittedBox(
             fit: BoxFit.cover,
-            child: Image.network(
-              value
-            ),
+            child: Image.network(value),
           );
   }
 
@@ -92,6 +135,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     this._editedProduct =
                         this._editedProduct.copyWith(title: value);
                   },
+                  validator: this.validateEmpty,
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Price'),
@@ -107,6 +151,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         ._editedProduct
                         .copyWith(price: double.parse(value));
                   },
+                  validator: this.validatePrice,
                 ),
                 TextFormField(
                   maxLines: 3,
@@ -117,6 +162,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     this._editedProduct =
                         this._editedProduct.copyWith(description: value);
                   },
+                  validator: this.validateEmpty,
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -141,6 +187,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                           this._editedProduct =
                               this._editedProduct.copyWith(imageUrl: value);
                         },
+                        validator: this.validateImageUrl,
                       ),
                     ),
                     Container(
