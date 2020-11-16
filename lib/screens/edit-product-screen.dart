@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopps/providers/product.provider.dart';
+import 'package:shopps/providers/products.provider.dart';
+import 'package:shopps/screens/products_overview_screen.dart';
+import 'package:shopps/screens/user_products_screen.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const String routeName = '/edit-product';
@@ -44,6 +48,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         setState(() {});
       } else if (this.validateImageUrl(_productImageUrlController.text) ==
           null) {
+        setState(() {});
         return;
       }
     }
@@ -53,7 +58,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     this._form.currentState.validate();
     // This will trigger every control inside this form
     this._form.currentState.save();
-    print(this._editedProduct.toString());
+
+    Provider.of<Products>(context, listen: false).add(this._editedProduct);
+    Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
   }
 
   String validateEmpty(String value) {
@@ -80,7 +87,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   String validateImageUrl(String value) {
-    if(value.isEmpty) {
+    if (value.isEmpty) {
       return 'This field is required';
     }
 
@@ -98,7 +105,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget buildImageOrText() {
     final value = this._productImageUrlController.text;
     return value.isEmpty
-        ? Center(child: Text('Enter a URL'))
+        ? const Center(child: Text('Enter a URL'))
         : FittedBox(
             fit: BoxFit.cover,
             child: Image.network(value),
@@ -112,20 +119,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
         title: const Text('Edit Product'),
         actions: [
           IconButton(
-            icon: Icon(Icons.save),
+            icon: const Icon(Icons.save),
             onPressed: this._saveForm,
           ),
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Form(
           key: this._form,
           child: SingleChildScrollView(
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Title'),
+                  decoration: const InputDecoration(labelText: 'Title'),
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
@@ -138,7 +145,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   validator: this.validateEmpty,
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Price'),
+                  decoration: const InputDecoration(labelText: 'Price'),
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.next,
                   focusNode: this._priceFocusNode,
@@ -155,7 +162,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 ),
                 TextFormField(
                   maxLines: 3,
-                  decoration: InputDecoration(labelText: 'Description'),
+                  decoration: const InputDecoration(labelText: 'Description'),
                   keyboardType: TextInputType.multiline,
                   focusNode: this._descriptionFocusNode,
                   onSaved: (value) {
@@ -171,8 +178,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     // Children
                     Expanded(
                       child: TextFormField(
-                        decoration:
-                            InputDecoration(labelText: 'Product Image URL'),
+                        decoration: const InputDecoration(
+                            labelText: 'Product Image URL'),
                         keyboardType: TextInputType.url,
                         textInputAction: TextInputAction.done,
                         focusNode: this._productImageUrlFocusNode,
@@ -191,8 +198,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 25, left: 15),
-                      padding: EdgeInsets.all(5),
+                      margin: const EdgeInsets.only(top: 25, left: 15),
+                      padding: const EdgeInsets.all(5),
                       width: 150,
                       height: 100,
                       decoration: BoxDecoration(

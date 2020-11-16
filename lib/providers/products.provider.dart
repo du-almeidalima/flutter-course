@@ -51,7 +51,17 @@ class Products with ChangeNotifier {
   }
 
   void add(Product product) {
-    this._products.add(product);
+    // To create ID
+    final newProduct = Product(
+      id: DateTime.now().toString(),
+      title: product.title,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      isFavorite: false,
+      description: product.description
+    );
+
+    this._products.add(newProduct);
     notifyListeners();
   }
 
