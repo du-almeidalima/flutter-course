@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopps/screens/cart_screen.dart';
 import 'package:shopps/screens/orders_screen.dart';
+import 'package:shopps/screens/user_products_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   ListTile buildListTile(IconData icon, String title, Function onTileTapped) {
@@ -44,6 +45,10 @@ class MainDrawer extends StatelessWidget {
           Divider(),
           buildListTile(Icons.shopping_bag, 'Orders', () {
             Navigator.of(context).pushReplacementNamed(OrdersScreen.routeName);
+          }),
+          Divider(),
+          buildListTile(Icons.attach_money, 'Products', () {
+            Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
           }),
         ],
       ),
