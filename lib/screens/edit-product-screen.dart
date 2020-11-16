@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopps/providers/product.provider.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const String routeName = '/edit-product';
@@ -13,6 +14,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _productImageUrlFocusNode = FocusNode();
   final _productImageUrlController = TextEditingController();
+  // A GlobalKey is useful for tackling into the State of another Widget
+  final _form = GlobalKey<FormState>();
+
+  var _editedProduct = Product.empty();
 
   @override
   void initState() {
@@ -39,13 +44,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
+  void _saveForm() {
+    // This will trigger every control inside this form
+    this._form.currentState.save();
+    print(this._editedProduct.toString());
+  }
+
   Widget buildImageOrText() {
     final value = this._productImageUrlController.text;
     return value.isEmpty
         ? Text('Enter a URL')
         : FittedBox(
             fit: BoxFit.cover,
-            child: Image.network(value),
+            child: Image.network(
+              value
+            ),
           );
   }
 
@@ -54,10 +67,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Product'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: this._saveForm,
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Form(
+          key: this._form,
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -67,6 +87,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(this._priceFocusNode);
+                  },
+                  onSaved: (value) {
+                    this._editedProduct =
+                        this._editedProduct.copyWith(title: value);
                   },
                 ),
                 TextFormField(
@@ -78,12 +102,21 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     FocusScope.of(context)
                         .requestFocus(this._descriptionFocusNode);
                   },
+                  onSaved: (value) {
+                    this._editedProduct = this
+                        ._editedProduct
+                        .copyWith(price: double.parse(value));
+                  },
                 ),
                 TextFormField(
                   maxLines: 3,
                   decoration: InputDecoration(labelText: 'Description'),
                   keyboardType: TextInputType.multiline,
                   focusNode: this._descriptionFocusNode,
+                  onSaved: (value) {
+                    this._editedProduct =
+                        this._editedProduct.copyWith(description: value);
+                  },
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -101,12 +134,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
                         onEditingComplete: () {
                           setState(() {});
                         },
+                        onFieldSubmitted: (_) {
+                          this._saveForm();
+                        },
+                        onSaved: (value) {
+                          this._editedProduct =
+                              this._editedProduct.copyWith(imageUrl: value);
+                        },
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 25, left: 15),
-                      padding: EdgeInsets.all(15),
+                      padding: EdgeInsets.all(5),
                       width: 150,
+                      height: 100,
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                       ),
