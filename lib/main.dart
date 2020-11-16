@@ -9,6 +9,7 @@ import 'package:shopps/screens/orders_screen.dart';
 import 'package:shopps/screens/product_detail_screen.dart';
 import 'package:shopps/screens/products_overview_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,6 +48,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        builder: (context, child) {
+          // Introducing a global Scaffold
+          return Scaffold(
+            key: GlobalScaffoldKey.instance.scaffoldKey,
+            body: child,
+          );
+        },
         home: ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),

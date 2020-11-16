@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/providers/products.provider.dart';
 import 'package:shopps/screens/user_products_screen.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 class EditProductScreen extends StatefulWidget {
   static const String routeName = '/edit-product';
@@ -66,20 +67,29 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
-    if(!this._form.currentState.validate()){
+    if (!this._form.currentState.validate()) {
       return;
     }
 
     // This will trigger onSaved in every control inside this form
     this._form.currentState.save();
 
-    if(this._editedProduct.id == null) {
+    if (this._editedProduct.id == null) {
       Provider.of<Products>(context, listen: false).add(this._editedProduct);
     } else {
       Provider.of<Products>(context, listen: false).update(this._editedProduct);
     }
 
     Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+    GlobalScaffoldKey.instance.showGlobalSnackbar(
+      SnackBar(
+        content: Text(
+          'Item successfuly ${this._editedProduct.id == null ? 'added' : 'updated'}.',
+        ),
+        duration: Duration(seconds: 4),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   String validateEmpty(String value) {
