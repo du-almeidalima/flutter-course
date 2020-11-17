@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/providers/products.provider.dart';
 import 'package:shopps/screens/edit-product-screen.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 class UserProductItem extends StatelessWidget {
   final Product product;
@@ -45,9 +48,16 @@ class UserProductItem extends StatelessWidget {
       context: context,
       builder: (ctx) => this.buildConfirmDialog(context, ctx),
     ).then((result) {
-      if(result) {
-        Provider.of<Products>(context, listen: false).delete(productId);
-      }
+      Provider.of<Products>(context, listen: false)
+          .delete(productId)
+          .catchError((_) {
+        GlobalScaffoldKey.instance.showGlobalSnackbar(
+          SnackBar(
+            content: Text("Item couldn't be deleted"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      });
     });
   }
 
@@ -105,7 +115,8 @@ class UserProductItem extends StatelessWidget {
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    this.onProductDelete(context, this.product.id);
+                                    this.onProductDelete(
+                                        context, this.product.id);
                                   },
                                   icon: const Icon(Icons.delete),
                                   iconSize: 18,

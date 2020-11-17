@@ -127,9 +127,15 @@ class Products with ChangeNotifier {
     }
   }
 
-  void delete(String productId) {
-    this._products.removeWhere((p) => p.id == productId);
-    notifyListeners();
+  Future<void> delete(String productId) async {
+    // For some reason, DELETE requests doesn't throw errors
+    await http.delete('$baseURL/products/$productId').then((res) {
+      if(res.statusCode >= 400) {
+        throw HttpException('Could not execute deletion');
+      }
+      this._products.removeWhere((p) => p.id == productId);
+      notifyListeners();
+    });
   }
 
   void favoriteProduct(String id) {
