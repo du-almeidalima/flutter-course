@@ -87,8 +87,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
               .add(this._editedProduct);
         }
 
-        return Future.value();
-        // Provider.of<Products>(context, listen: false).update(this._editedProduct);
+        return Provider.of<Products>(context, listen: false)
+            .update(this._editedProduct);
       }();
 
       GlobalScaffoldKey.instance.showGlobalSnackbar(
@@ -100,7 +100,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           backgroundColor: Colors.green,
         ),
       );
-    } on Exception catch(e) {
+    } on Exception catch (e) {
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(

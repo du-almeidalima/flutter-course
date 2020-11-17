@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shopps/config.dart';
 import 'package:shopps/providers/product.provider.dart';
-import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   bool _isFavoriteFilter = false;
@@ -110,9 +109,19 @@ class Products with ChangeNotifier {
     }
   }
 
-  void update(Product product) {
+  Future<void> update(Product product) async {
     final index = this._products.indexWhere((p) => p.id == product.id);
     if (index >= 0) {
+      await http.patch(
+        '$baseURL/products/${product.id}.json',
+        body: json.encode({
+          'title': product.title,
+          'price': product.price,
+          'imageUrl': product.imageUrl,
+          'description': product.description,
+        }),
+      );
+
       this._products[index] = product;
       notifyListeners();
     }
