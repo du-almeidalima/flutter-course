@@ -1,0 +1,1 @@
+const baseURL = 'https://du-flutter-shopps.firebaseio.com/';

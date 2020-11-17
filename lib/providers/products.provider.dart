@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shopps/config.dart';
 import 'package:shopps/providers/product.provider.dart';
+import 'package:http/http.dart' as http;
 
 class Products with ChangeNotifier {
   bool _isFavoriteFilter = false;
@@ -51,23 +55,38 @@ class Products with ChangeNotifier {
   }
 
   void add(Product product) {
-    // To create ID
-    final newProduct = Product(
-      id: DateTime.now().toString(),
-      title: product.title,
-      price: product.price,
-      imageUrl: product.imageUrl,
-      isFavorite: false,
-      description: product.description
-    );
+    http
+        .post(
+      '$baseURL/products.json',
+      body: json.encode({
+        'title': product.title,
+        'price': product.price,
+        'imageUrl': product.imageUrl,
+        'description': product.description,
+        'isFavorite': product.isFavorite,
+      }),
+    )
+        .then(
+      (res) {
+        
+        final newProduct = Product(
+          id: json.decode(res.body)['name'],
+          title: product.title,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          isFavorite: false,
+          description: product.description,
+        );
 
-    this._products.add(newProduct);
-    notifyListeners();
+        this._products.add(newProduct);
+        notifyListeners();
+      },
+    );
   }
 
   void update(Product product) {
     final index = this._products.indexWhere((p) => p.id == product.id);
-    if(index >= 0) {
+    if (index >= 0) {
       this._products[index] = product;
       notifyListeners();
     }
