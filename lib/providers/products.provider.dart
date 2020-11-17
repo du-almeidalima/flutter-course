@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -55,10 +56,14 @@ class Products with ChangeNotifier {
     return this._products.firstWhere((p) => p.id == id);
   }
 
+  Future<void> fetch() async {
+    final res = await http.get('$baseURL/products.json}');
+  }
+
   Future<void> add(Product product) async {
     try {
       final res = await http.post(
-        '$baseURL/products',
+        '$baseURL/products.json',
         body: json.encode({
           'title': product.title,
           'price': product.price,
