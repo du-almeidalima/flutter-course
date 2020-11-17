@@ -67,9 +67,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     if (!this._form.currentState.validate()) {
-      return;
+      return Future.value();
     }
 
     // This will trigger onSaved in every control inside this form
@@ -79,15 +79,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
       this.isLoading = true;
     });
 
-    // I'm using an IEF so i can attach the ".then" to both returns
-    () {
-      if (this._editedProduct.id == null) {
-        return Provider.of<Products>(context, listen: false)
-            .add(this._editedProduct);
-      }
-      // Provider.of<Products>(context, listen: false).update(this._editedProduct);
-    }()
-    .then((_) {
+    try {
+      // I'm using an IEF so i can attach the ".then" to both returns
+      await () async {
+        if (this._editedProduct.id == null) {
+          return Provider.of<Products>(context, listen: false)
+              .add(this._editedProduct);
+        }
+
+        return Future.value();
+        // Provider.of<Products>(context, listen: false).update(this._editedProduct);
+      }();
+
       GlobalScaffoldKey.instance.showGlobalSnackbar(
         SnackBar(
           content: Text(
@@ -97,9 +100,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
           backgroundColor: Colors.green,
         ),
       );
-    })
-    .catchError((err) {
-      showDialog(
+    } on Exception catch(e) {
+      await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
           title: const Text('An error has occurred!'),
@@ -114,16 +116,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
           ],
         ),
       );
-    })
-    // Placing this .then after catchError and first .then so it's always executed
-    // Also, for it to be executed, when the user closes the dialog, I'm returning
-    // the showDialog Future
-    .then((_) {
+    } finally {
       setState(() {
         this.isLoading = false;
       });
       Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
-    });
+    }
   }
 
   String validateEmpty(String value) {
