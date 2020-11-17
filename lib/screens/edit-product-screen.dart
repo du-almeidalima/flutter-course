@@ -78,29 +78,52 @@ class _EditProductScreenState extends State<EditProductScreen> {
     setState(() {
       this.isLoading = true;
     });
-    if (this._editedProduct.id == null) {
-      Provider.of<Products>(context, listen: false)
-          .add(this._editedProduct)
-          .then((_) {
-            setState(() {
-              this.isLoading = false;
-            });
-        Navigator.of(context)
-            .pushReplacementNamed(UserProductsScreen.routeName);
-      });
-    } else {
-      Provider.of<Products>(context, listen: false).update(this._editedProduct);
-    }
 
-    GlobalScaffoldKey.instance.showGlobalSnackbar(
-      SnackBar(
-        content: Text(
-          'Item successfuly ${this._editedProduct.id == null ? 'added' : 'updated'}.',
+    // I'm using an IEF so i can attach the ".then" to both returns
+    () {
+      if (this._editedProduct.id == null) {
+        return Provider.of<Products>(context, listen: false)
+            .add(this._editedProduct);
+      }
+      // Provider.of<Products>(context, listen: false).update(this._editedProduct);
+    }()
+    .then((_) {
+      GlobalScaffoldKey.instance.showGlobalSnackbar(
+        SnackBar(
+          content: Text(
+            'Item successfuly ${this._editedProduct.id == null ? 'added' : 'updated'}.',
+          ),
+          duration: Duration(seconds: 4),
+          backgroundColor: Colors.green,
         ),
-        duration: Duration(seconds: 4),
-        backgroundColor: Colors.green,
-      ),
-    );
+      );
+    })
+    .catchError((err) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('An error has occurred!'),
+          content: const Text('Something went wrong...'),
+          actions: [
+            FlatButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        ),
+      );
+    })
+    // Placing this .then after catchError and first .then so it's always executed
+    // Also, for it to be executed, when the user closes the dialog, I'm returning
+    // the showDialog Future
+    .then((_) {
+      setState(() {
+        this.isLoading = false;
+      });
+      Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+    });
   }
 
   String validateEmpty(String value) {
