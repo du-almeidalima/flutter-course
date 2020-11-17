@@ -57,7 +57,27 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetch() async {
-    final res = await http.get('$baseURL/products.json}');
+    try {
+      final res = await http.get('$baseURL/products.json');
+      final decodedRes = json.decode(res.body) as Map<String, dynamic>;
+      final List<Product> fetchedProducts = [];
+      decodedRes.forEach(
+        (id, properties) {
+          fetchedProducts.add(Product(
+              id: id,
+              title: properties['title'],
+              description: properties['description'],
+              imageUrl: properties['imageUrl'],
+              price: properties['price'],
+              isFavorite: properties['isFavorite']));
+        },
+      );
+
+      this._products = fetchedProducts;
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> add(Product product) async {
