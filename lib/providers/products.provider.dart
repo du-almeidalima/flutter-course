@@ -54,9 +54,9 @@ class Products with ChangeNotifier {
     return this._products.firstWhere((p) => p.id == id);
   }
 
-  void add(Product product) {
-    http
-        .post(
+  Future<void> add(Product product) {
+    return http
+    .post(
       '$baseURL/products.json',
       body: json.encode({
         'title': product.title,
@@ -66,9 +66,8 @@ class Products with ChangeNotifier {
         'isFavorite': product.isFavorite,
       }),
     )
-        .then(
+    .then(
       (res) {
-        
         final newProduct = Product(
           id: json.decode(res.body)['name'],
           title: product.title,
@@ -80,7 +79,7 @@ class Products with ChangeNotifier {
 
         this._products.add(newProduct);
         notifyListeners();
-      },
+      }
     );
   }
 
