@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopps/config.dart';
 import 'package:shopps/providers/cart.provider.dart';
+import 'package:shopps/providers/product.provider.dart';
 
 class OrderItem {
   final String id;
@@ -30,19 +31,21 @@ class Orders with ChangeNotifier {
     final res = await http.post(
       '$baseURL/orders.json',
       body: json.encode({
-        'amount': total,
+        'total': total,
         'date': timeStamp.toIso8601String(),
-        'items': cartItems.map((item) => {
-          'id': item.id,
-          'quantity': item.quantity,
-          'product': {
-            'title': item.product.title,
-            'price': item.product.price,
-            'imageUrl': item.product.imageUrl,
-            'description': item.product.description,
-            'isFavorite': item.product.isFavorite,
-          }
-        }).toList(),
+        'items': cartItems
+            .map((item) => {
+                  'id': item.id,
+                  'quantity': item.quantity,
+                  'product': {
+                    'title': item.product.title,
+                    'price': item.product.price,
+                    'imageUrl': item.product.imageUrl,
+                    'description': item.product.description,
+                    'isFavorite': item.product.isFavorite,
+                  }
+                })
+            .toList(),
       }),
     );
 
@@ -53,6 +56,45 @@ class Orders with ChangeNotifier {
         total: total);
 
     this._orders.add(order);
+    notifyListeners();
+  }
+
+  Future<void> fetch() async {
+    final res = await http.get('$baseURL/orders.json');
+    final decodedRes = json.decode(res.body) as Map<String, dynamic>;
+    List<OrderItem> fetchedOrders = [];
+
+    if(decodedRes == null) {
+      return;
+    }
+
+    decodedRes.forEach((id, properties) {
+      fetchedOrders.add(
+        OrderItem(
+          id: id,
+          date: DateTime.parse(properties['date']),
+          total: properties['total'],
+          items: (properties['items'] as List<dynamic>)
+              .map(
+                (item) => CartItem(
+                  id: item['id'],
+                  quantity: item['quantity'],
+                  product: Product(
+                    id: item['product']['id'],
+                    description: item['product']['description'],
+                    title: item['product']['title'],
+                    price: item['product']['price'],
+                    imageUrl: item['product']['imageUrl'],
+                    isFavorite: item['product']['isFavorite'],
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+      );
+    });
+
+    this._orders = fetchedOrders.reversed.toList();
     notifyListeners();
   }
 }
