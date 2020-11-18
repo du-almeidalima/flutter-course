@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopps/providers/auth_provider.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -92,15 +94,24 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final _passwordController = TextEditingController();
+  final _passwordFocusNode = FocusNode();
+  var _isLoading = false;
+
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
-  var _isLoading = false;
-  final _passwordController = TextEditingController();
 
-  void _submit() {
+
+  @override
+  void dispose() {
+    super.dispose();
+    this._passwordFocusNode.dispose();
+  }
+
+  void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
@@ -113,6 +124,8 @@ class _AuthCardState extends State<AuthCard> {
       // Log user in
     } else {
       // Sign user up
+      await Provider.of<Auth>(context, listen: false)
+          .signUp(this._authData['email'], this._authData['password']);
     }
     setState(() {
       _isLoading = false;
@@ -153,6 +166,7 @@ class _AuthCardState extends State<AuthCard> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
                   validator: (value) {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
@@ -162,11 +176,15 @@ class _AuthCardState extends State<AuthCard> {
                   onSaved: (value) {
                     _authData['email'] = value;
                   },
+                  onFieldSubmitted: (_) {
+                    this._passwordFocusNode.requestFocus();
+                  },
                 ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
+                  focusNode: this._passwordFocusNode,
                   validator: (value) {
                     if (value.isEmpty || value.length < 5) {
                       return 'Password is too short!';
