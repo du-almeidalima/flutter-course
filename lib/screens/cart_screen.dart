@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
@@ -40,19 +42,7 @@ class CartScreen extends StatelessWidget {
                     backgroundColor: Colors.amberAccent,
                   ),
                   Spacer(),
-                  FlatButton(
-                    onPressed: () {
-                      Provider.of<Orders>(context, listen: false).addOrder(
-                        cartProvider.cartItems.values.toList(),
-                        cartProvider.totalAmount,
-                      );
-                      cartProvider.clear();
-                    },
-                    child: Text(
-                      'ORDER NOW!',
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    ),
-                  )
+                  OrderButton(cartProvider)
                 ],
               ),
             ),
@@ -75,6 +65,57 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       drawer: MainDrawer(),
+    );
+  }
+}
+
+// == ORDER BUTTON WIDGET ==
+class OrderButton extends StatefulWidget {
+  const OrderButton(this.cartProvider);
+
+  final Cart cartProvider;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  var isLoading = false;
+
+  void handleButtonPressed() async {
+    setState(() {
+      this.isLoading = true;
+    });
+
+    try {
+      await Provider.of<Orders>(context, listen: false).addOrder(
+        widget.cartProvider.cartItems.values.toList(),
+        widget.cartProvider.totalAmount,
+      );
+      widget.cartProvider.clear();
+    } on HttpException catch (_) {
+      print('Something bad happened');
+    } finally {
+      setState(() {
+        this.isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      onPressed: widget.cartProvider.itemCount > 0
+          ? () {
+              this.handleButtonPressed();
+            }
+          : null,
+      child: this.isLoading
+          ? CircularProgressIndicator()
+          : Text(
+              'ORDER NOW!',
+              style: TextStyle(color: Theme.of(context).accentColor),
+            ),
     );
   }
 }
