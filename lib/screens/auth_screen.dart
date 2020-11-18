@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/auth_provider.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -32,7 +34,7 @@ class AuthScreen extends StatelessWidget {
           SingleChildScrollView(
             padding: EdgeInsets.only(top: deviceSize.height * 0.2),
             child: Container(
-              height: deviceSize.height,
+              height: deviceSize.height - deviceSize.height * 0.2,
               width: deviceSize.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -58,7 +60,7 @@ class AuthScreen extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        'MyShop',
+                        'Shopps',
                         style: TextStyle(
                           color:
                               Theme.of(context).accentTextTheme.headline6.color,
@@ -70,7 +72,7 @@ class AuthScreen extends StatelessWidget {
                     ),
                   ),
                   Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
+                    flex: 2,
                     child: AuthCard(),
                   ),
                 ],
@@ -104,29 +106,67 @@ class _AuthCardState extends State<AuthCard> {
     'password': '',
   };
 
-
   @override
   void dispose() {
     super.dispose();
     this._passwordFocusNode.dispose();
   }
 
+  void _showErrorSnackBar(String message) {
+    GlobalScaffoldKey.instance.showGlobalSnackbar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
   void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
     }
     _formKey.currentState.save();
+
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      // Log user in
-    } else {
-      // Sign user up
-      await Provider.of<Auth>(context, listen: false)
-          .signUp(this._authData['email'], this._authData['password']);
+
+    try {
+      if (_authMode == AuthMode.Login) {
+        // Log user in
+        await Provider.of<Auth>(context, listen: false)
+            .signIn(this._authData['email'], this._authData['password']);
+      } else {
+        // Sign user up
+        await Provider.of<Auth>(context, listen: false)
+            .signUp(this._authData['email'], this._authData['password']);
+      }
+    } on HttpException catch (e) {
+      var errorMessage = 'Authentication Failed';
+
+      switch(e.message) {
+        case 'EMAIL_EXISTS':
+          errorMessage = 'This email is already in use';
+          break;
+        case 'INVALID_EMAIL':
+          errorMessage = 'Please use a valid email';
+          break;
+        case 'WEAK_PASSWORD':
+          errorMessage = 'This password is too weak';
+          break;
+        case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+          errorMessage = 'Too many login attempts, please try later';
+          break;
+        case 'USER_NOT_FOUND':
+        case 'INVALID_PASSWORD':
+          errorMessage = 'Could not find a user with those credentials';
+          break;
+      }
+      _showErrorSnackBar(errorMessage);
+    } catch (e) {
+      _showErrorSnackBar('An unknown error happened');
     }
+
     setState(() {
       _isLoading = false;
     });
@@ -153,7 +193,7 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 360 : 300,
+        height: _authMode == AuthMode.Signup ? 320 : 260,
         constraints:
             BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
         width: deviceSize.width * 0.75,
