@@ -1,10 +1,27 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/screens/product_detail_screen.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 class ProductItem extends StatelessWidget {
+
+  void _handleProductFavorite(Product product) async {
+    try {
+      await product.toggleFavorite();
+    } on HttpException catch(_) {
+      GlobalScaffoldKey.instance.showGlobalSnackbar(
+        SnackBar(
+          content: Text("Item couldn't be updated"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Reaching to parent to find a instance of Product that has a ChangeNotifier
@@ -39,7 +56,7 @@ class ProductItem extends StatelessWidget {
                   prod.isFavorite ? Icons.favorite : Icons.favorite_border,
                 ),
                 onPressed: () {
-                  prod.toggleFavorite();
+                  this._handleProductFavorite(prod);
                 },
               ),
             ),

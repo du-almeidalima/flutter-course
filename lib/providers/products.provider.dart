@@ -7,7 +7,6 @@ import 'package:shopps/config.dart';
 import 'package:shopps/providers/product.provider.dart';
 
 class Products with ChangeNotifier {
-  bool _isFavoriteFilter = false;
   List<Product> _products = [
     Product(
       id: 'p1',
@@ -129,7 +128,7 @@ class Products with ChangeNotifier {
 
   Future<void> delete(String productId) async {
     // For some reason, DELETE requests doesn't throw errors
-    await http.delete('$baseURL/products/$productId').then((res) {
+    await http.delete('$baseURL/products/$productId.json').then((res) {
       if(res.statusCode >= 400) {
         throw HttpException('Could not execute deletion');
       }
@@ -138,8 +137,8 @@ class Products with ChangeNotifier {
     });
   }
 
-  void favoriteProduct(String id) {
-    this._products.firstWhere((p) => p.id == id).toggleFavorite();
+  Future<void> favoriteProduct(String id) async{
+    await this._products.firstWhere((p) => p.id == id).toggleFavorite();
     notifyListeners();
   }
 }

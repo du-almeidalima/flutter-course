@@ -1,12 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/products.provider.dart';
 import 'package:shopps/screens/cart_screen.dart';
+import 'package:shopps/utils/GlobalScaffoldKey.dart';
 import 'package:shopps/widgets/badge.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   static const String routeName = '/product-detail';
+
+  void _handleProductFavorite(BuildContext context, String productId) async {
+    try {
+      await Provider.of<Products>(context, listen: false)
+          .favoriteProduct(productId);
+    } on HttpException catch (_) {
+      GlobalScaffoldKey.instance.showGlobalSnackbar(
+        SnackBar(
+          content: Text("Item couldn't be updated"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +88,7 @@ class ProductDetailScreen extends StatelessWidget {
         children: [
           FlatButton(
             onPressed: () {
-              productsProvider.favoriteProduct(productId);
+              this._handleProductFavorite(context, productId);
             },
             child: Icon(
               product.isFavorite ? Icons.favorite : Icons.favorite_outline,
