@@ -33,7 +33,11 @@ class ProductsGrid extends StatelessWidget {
             // Bugs similar to list items without Keys
             value: productsList[i],
             // ProductItem will get its values via
-            child: ProductItem(),
+            child: ProductItem(
+              favoriteProductHandler: (String productId) async{
+                return productsProvider.favoriteProduct(productId);
+              },
+            ),
           ),
         );
       },
@@ -44,13 +48,13 @@ class ProductsGrid extends StatelessWidget {
 /*
  * In here we're using two ChangeNotifier classes the Products and the Product.
  * The Products Notifier will handle changes in the list as a whole,
- * the Product Notifier will handle changes in the product favorite proerty.
+ * the Product Notifier will handle changes in the product favorite property.
  * 
- * This is usefull when you want that each item of the list reacts to change,
+ * This is useful when you want that each item of the list reacts to change,
  * not the list as a whole.
  * 
  * Notes to ChangeNotifierProvider constructor. When using a value that is being
- * instanciated, such as in the main.dart file, it's better to use the
+ * instantiated, such as in the main.dart file, it's better to use the
  * ChangeNotifierProvider() constructor. However, for values that are already
- * instanciated, it's better to use the ChangeNotifierProvider.value() approach
+ * instantiated, it's better to use the ChangeNotifierProvider.value() approach
  */

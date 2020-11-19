@@ -9,20 +9,40 @@ class Auth with ChangeNotifier {
   String _userId;
   DateTime _expirationDate;
 
+  bool get isAuth {
+    return this.token != null;
+  }
+
+  String get token {
+    if (this._token != null &&
+        this._expirationDate != null &&
+        _expirationDate.isAfter(DateTime.now())
+    ) {
+      return this._token;
+    }
+
+    return null;
+  }
+
   Future<void> _authUser(String email, String password, String url) async {
     try {
       final res = await http.post(url,
           body: json.encode(
-              {'email': email, 'password': password, 'returnSecureToken': true}));
+              {
+                'email': email,
+                'password': password,
+                'returnSecureToken': true
+              }));
 
       this._handleResponse(json.decode(res.body));
-    } catch(e) {
+      notifyListeners();
+    } catch (e) {
       throw e;
     }
   }
 
   void _handleResponse(Map<String, dynamic> parsedRes) {
-    if(parsedRes['error'] != null) {
+    if (parsedRes['error'] != null) {
       throw HttpException(parsedRes['error']['message']);
     }
 

@@ -7,11 +7,16 @@ import 'package:shopps/providers/product.provider.dart';
 import 'package:shopps/screens/product_detail_screen.dart';
 import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
-class ProductItem extends StatelessWidget {
+typedef Future<void> AsyncProductHandlerFn(String productId);
 
+class ProductItem extends StatelessWidget {
+  final AsyncProductHandlerFn favoriteProductHandler;
+
+  const ProductItem({this.favoriteProductHandler});
+  
   void _handleProductFavorite(Product product) async {
     try {
-      await product.toggleFavorite();
+      await this.favoriteProductHandler(product.id);
     } on HttpException catch(_) {
       GlobalScaffoldKey.instance.showGlobalSnackbar(
         SnackBar(
@@ -100,4 +105,10 @@ class ProductItem extends StatelessWidget {
  * does. What we could is, in the overall Widget, we could still use the
  * Provider.of to get the data needed, but for the part that changes, we can use
  * the Consumer Widget. With this, only the changed part will re-build
+ */
+
+/*
+ * AsyncProductHandlerFn: I needed to do this because the Product provider would
+ * need to have the authToken if the updateFavorite logic was inside it. So I
+ * created an wrapper for a function that comes from Products provider.
  */
