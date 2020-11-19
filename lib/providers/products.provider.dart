@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:shopps/config.dart';
 import 'package:shopps/providers/product.provider.dart';
 
+import 'auth_provider.dart';
+
 class Products with ChangeNotifier {
-  String _authToken;
+  Auth authProvider;
   List<Product> _products = [];
 
   List<Product> get products {
@@ -19,34 +21,51 @@ class Products with ChangeNotifier {
   }
 
   // Constructor
-  Products(this._authToken, this._products);
+  Products(this.authProvider, this._products);
 
   Product findById(String id) {
     return this._products.firstWhere((p) => p.id == id);
   }
 
   Future<void> fetch() async {
+    http.Response prodRes;
+    http.Response userFavRes;
+
     try {
-      final res = await http.get(getAuthURL(
+      prodRes = await http.get(getAuthURL(
         resource: 'products',
-        token: this._authToken,
+        token: this.authProvider.token,
       ));
-      final decodedRes = json.decode(res.body) as Map<String, dynamic>;
+
+      try {
+        userFavRes = await http.get(getAuthURL(
+          resource: 'userFavorites/${this.authProvider.userId}',
+          token: this.authProvider.token,
+        ));
+      } catch (e) {
+        print('Something wrong happened while fetching user favorites');
+      }
+
+      final decodedProdRes = json.decode(prodRes.body) as Map<String, dynamic>;
+      final decodedUserFavRes = json.decode(userFavRes.body);
       final List<Product> fetchedProducts = [];
 
-      if (decodedRes == null) {
+      if (decodedProdRes == null) {
         return;
       }
 
-      decodedRes.forEach(
+      decodedProdRes.forEach(
         (id, properties) {
           fetchedProducts.add(Product(
-              id: id,
-              title: properties['title'],
-              description: properties['description'],
-              imageUrl: properties['imageUrl'],
-              price: properties['price'],
-              isFavorite: properties['isFavorite']));
+            id: id,
+            title: properties['title'],
+            description: properties['description'],
+            imageUrl: properties['imageUrl'],
+            price: properties['price'],
+            isFavorite: decodedUserFavRes == null
+                ? false
+                : decodedUserFavRes[id] ?? false,
+          ));
         },
       );
 
@@ -60,13 +79,12 @@ class Products with ChangeNotifier {
   Future<void> add(Product product) async {
     try {
       final res = await http.post(
-        getAuthURL(resource: 'products', token: this._authToken),
+        getAuthURL(resource: 'products', token: this.authProvider.token),
         body: json.encode({
           'title': product.title,
           'price': product.price,
           'imageUrl': product.imageUrl,
           'description': product.description,
-          'isFavorite': product.isFavorite,
         }),
       );
 
@@ -75,7 +93,6 @@ class Products with ChangeNotifier {
         title: product.title,
         price: product.price,
         imageUrl: product.imageUrl,
-        isFavorite: false,
         description: product.description,
       );
 
@@ -91,7 +108,8 @@ class Products with ChangeNotifier {
     final index = this._products.indexWhere((p) => p.id == product.id);
     if (index >= 0) {
       await http.patch(
-        getAuthURL(resource: 'products/${product.id}', token: this._authToken),
+        getAuthURL(
+            resource: 'products/${product.id}', token: this.authProvider.token),
         body: json.encode({
           'title': product.title,
           'price': product.price,
@@ -108,13 +126,13 @@ class Products with ChangeNotifier {
   Future<void> delete(String productId) async {
     // For some reason, DELETE requests doesn't throw errors
     await http
-    .delete(
+        .delete(
       getAuthURL(
         resource: 'products/$productId',
-        token: this._authToken,
+        token: this.authProvider.token,
       ),
     )
-    .then((res) {
+        .then((res) {
       if (res.statusCode >= 400) {
         throw HttpException('Could not execute deletion');
       }
@@ -123,11 +141,13 @@ class Products with ChangeNotifier {
     });
   }
 
-  Future<void> favoriteProduct(String id) async {
-    final product = this._products.firstWhere((p) => p.id == id);
+  Future<void> favoriteProduct(String productId) async {
+    final product = this._products.firstWhere((p) => p.id == productId);
 
     final res = await http.patch(
-      getAuthURL(resource: 'products/$id', token: this._authToken),
+      getAuthURL(
+          resource: 'userFavorites/${this.authProvider.userId}/$productId',
+          token: this.authProvider.token),
       body: json.encode({
         'isFavorite': !product.isFavorite,
       }),
