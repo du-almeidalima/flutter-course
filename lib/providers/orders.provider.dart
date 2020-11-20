@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopps/config.dart';
+import 'package:shopps/providers/auth_provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/product.provider.dart';
 
@@ -20,10 +21,10 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  final String _authToken;
+  final Auth _authProvider;
   List<OrderItem> _orders = [];
 
-  Orders(this._authToken, this._orders);
+  Orders(this._authProvider, this._orders);
 
   List<OrderItem> get orders {
     return [...this._orders];
@@ -32,7 +33,10 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(List<CartItem> cartItems, double total) async {
     final timeStamp = DateTime.now();
     final res = await http.post(
-      getAuthURL(resource: 'orders', token: this._authToken),
+      getAuthURL(
+        resource: 'orders/${_authProvider.userId}',
+        token: this._authProvider.token,
+      ),
       body: json.encode({
         'total': total,
         'date': timeStamp.toIso8601String(),
@@ -64,7 +68,10 @@ class Orders with ChangeNotifier {
 
   Future<void> fetch() async {
     final res = await http.get(
-      getAuthURL(resource: 'orders', token: this._authToken),
+      getAuthURL(
+        resource: 'orders/${_authProvider.userId}',
+        token: this._authProvider.token,
+      ),
     );
     final decodedRes = json.decode(res.body) as Map<String, dynamic>;
     List<OrderItem> fetchedOrders = [];

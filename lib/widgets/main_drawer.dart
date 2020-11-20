@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopps/providers/auth_provider.dart';
 import 'package:shopps/screens/cart_screen.dart';
 import 'package:shopps/screens/orders_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
@@ -48,8 +50,13 @@ class MainDrawer extends StatelessWidget {
           }),
           Divider(),
           buildListTile(Icons.attach_money, 'Products', () {
-            Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+            Navigator.of(context)
+                .pushReplacementNamed(UserProductsScreen.routeName);
           }),
+          Spacer(),
+          buildListTile(Icons.exit_to_app, 'Logout', () {
+            Provider.of<Auth>(context, listen: false).signOut();
+          })
         ],
       ),
     );
