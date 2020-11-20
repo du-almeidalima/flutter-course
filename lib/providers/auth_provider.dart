@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
@@ -8,6 +9,7 @@ class Auth with ChangeNotifier {
   String _token;
   String _userId;
   DateTime _expirationDate;
+  Timer _logoutTimer;
 
   bool get isAuth {
     return this.token != null;
@@ -39,6 +41,7 @@ class Auth with ChangeNotifier {
               }));
 
       this._handleResponse(json.decode(res.body));
+      this._startAutoLogoutTimer(_expirationDate.difference(DateTime.now()));
       notifyListeners();
     } catch (e) {
       throw e;
@@ -69,6 +72,19 @@ class Auth with ChangeNotifier {
     this._userId = null;
     this._token = null;
     this._expirationDate = null;
+    if (this._logoutTimer != null) {
+      this._logoutTimer.cancel();
+    }
+
     notifyListeners();
+  }
+
+  void _startAutoLogoutTimer(Duration expirationTime) {
+    if (this._logoutTimer != null) {
+      this._logoutTimer.cancel();
+    }
+    this._logoutTimer = Timer(expirationTime, () {
+      this.signOut();
+    });
   }
 }
