@@ -33,8 +33,6 @@ class ProductItem extends StatelessWidget {
     final productProvider = Provider.of<Product>(context, listen: false);
     final cartProvider = Provider.of<Cart>(context, listen: false);
 
-    print('Product ${productProvider.title} build');
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(

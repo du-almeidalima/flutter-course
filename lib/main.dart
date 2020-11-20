@@ -11,6 +11,7 @@ import 'package:shopps/screens/edit-product-screen.dart';
 import 'package:shopps/screens/orders_screen.dart';
 import 'package:shopps/screens/product_detail_screen.dart';
 import 'package:shopps/screens/products_overview_screen.dart';
+import 'package:shopps/screens/splash_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
 import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
@@ -32,10 +33,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProxyProvider<Auth, Products>(
           create: (_) => Products(null, MOCK_PRODUCTS),
-          update: (ctx, auth, oldProductsState) => Products(
-            auth,
-            oldProductsState.products != null ? oldProductsState.products : [],
-          ),
+          update: (ctx, auth, oldProductsState){
+            return Products(
+              auth,
+              oldProductsState.products != null ? oldProductsState.products : [],
+            );
+          },
         ),
         ChangeNotifierProxyProvider<Auth, Orders>(
           create: (_) => Orders(null, []),
@@ -59,7 +62,9 @@ class MyApp extends StatelessWidget {
                 color: Theme.of(context).accentColor,
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).accentColor),
+                borderSide: BorderSide(
+                  color: Theme.of(context).accentColor,
+                ),
               ),
             ),
           ),
@@ -70,7 +75,22 @@ class MyApp extends StatelessWidget {
               body: child,
             );
           },
-          home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductsOverviewScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, autoLoginSnapshot) {
+                    // Checking the status of tryAutoLogin, this returns a boolean
+                    // and notify the changes when finishes. That's why we don't
+                    // need to worry forwarding the user to the ProductsOverviewScreen
+                    // Because when it finishes, the notifyListeners will rebuild this
+                    // Widget tree. Look at the Consumer<Auth> above
+                    return autoLoginSnapshot.connectionState ==
+                            ConnectionState.waiting
+                        ? SplashScreen()
+                        : AuthScreen();
+                  },
+                ),
           routes: {
             ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),

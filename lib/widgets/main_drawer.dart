@@ -56,6 +56,7 @@ class MainDrawer extends StatelessWidget {
           Spacer(),
           buildListTile(Icons.exit_to_app, 'Logout', () {
             Provider.of<Auth>(context, listen: false).signOut();
+            Navigator.of(context).pushReplacementNamed('/');
           })
         ],
       ),

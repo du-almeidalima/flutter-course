@@ -21,13 +21,16 @@ class Products with ChangeNotifier {
   }
 
   // Constructor
-  Products(this.authProvider, this._products);
+  Products(this.authProvider, this._products) {
+    print('Products Constructor');
+  }
 
   Product findById(String id) {
     return this._products.firstWhere((p) => p.id == id);
   }
 
   Future<void> fetch([bool filterByUser = false]) async {
+    print('Called');
     final filterParam = filterByUser
         ? '&orderBy="creatorId"&equalTo="${this.authProvider.userId}"'
         : '';
@@ -40,14 +43,10 @@ class Products with ChangeNotifier {
           token: this.authProvider.token,
           params: filterParam));
 
-      try {
-        userFavRes = await http.get(getAuthURL(
-          resource: 'userFavorites/${this.authProvider.userId}',
-          token: this.authProvider.token,
-        ));
-      } catch (e) {
-        print('Something wrong happened while fetching user favorites');
-      }
+      userFavRes = await http.get(getAuthURL(
+        resource: 'userFavorites/${this.authProvider.userId}',
+        token: this.authProvider.token,
+      ));
 
       final decodedProdRes = json.decode(prodRes.body) as Map<String, dynamic>;
       final decodedUserFavRes = json.decode(userFavRes.body);

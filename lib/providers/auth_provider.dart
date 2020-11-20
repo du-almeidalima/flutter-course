@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopps/config.dart';
 
 class Auth with ChangeNotifier {
@@ -41,8 +42,18 @@ class Auth with ChangeNotifier {
               }));
 
       this._handleResponse(json.decode(res.body));
-      this._startAutoLogoutTimer(_expirationDate.difference(DateTime.now()));
+      this._startAutoLogoutTimer(
+        this._expirationDate.difference(DateTime.now()
+      ));
       notifyListeners();
+
+      final encodedUserData = json.encode({
+        'token': this._token,
+        'userId': this._userId,
+        'expirationDate': this._expirationDate.toIso8601String()
+      });
+      final sharedPrefs = await SharedPreferences.getInstance();
+      sharedPrefs.setString('userData', encodedUserData);
     } catch (e) {
       throw e;
     }
@@ -68,13 +79,39 @@ class Auth with ChangeNotifier {
     return this._authUser(email, password, signInURL);
   }
 
-  void signOut() {
+  Future<bool> tryAutoLogin() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    if (!sharedPrefs.containsKey('userData')) {
+      return false;
+    }
+
+    final extractedUserData = json.decode(sharedPrefs.getString('userData'));
+    final expirationDate = DateTime.parse(extractedUserData['expirationDate']);
+
+    if (expirationDate.isBefore(DateTime.now())) {
+      return false;
+    }
+
+    this._token = extractedUserData['token'];
+    this._userId = extractedUserData['userId'];
+    this._expirationDate = DateTime.parse(extractedUserData['expirationDate']);
+
+    // Notifying the Consumer<Auth> in main.dart
+    notifyListeners();
+    this._startAutoLogoutTimer(this._expirationDate.difference(DateTime.now()));
+    return true;
+  }
+
+  void signOut() async {
     this._userId = null;
     this._token = null;
     this._expirationDate = null;
     if (this._logoutTimer != null) {
       this._logoutTimer.cancel();
     }
+
+    final sharedPrefs = await SharedPreferences.getInstance();
+    sharedPrefs.remove('userData');
 
     notifyListeners();
   }
