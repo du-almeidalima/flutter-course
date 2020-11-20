@@ -10,13 +10,11 @@ class UserProductsScreen extends StatelessWidget {
 
   // This method will aways return a Future
   Future<void> screenRefreshed(BuildContext context) async {
-    await Provider.of<Products>(context, listen: false).fetch();
+    await Provider.of<Products>(context, listen: false).fetch(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productsProvider = Provider.of<Products>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Products'),
@@ -29,16 +27,28 @@ class UserProductsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () => this.screenRefreshed(context),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: productsProvider.products.length,
-            itemBuilder: (ctx, i) =>
-                UserProductItem(productsProvider.products[i]),
-          ),
-        ),
+      body: FutureBuilder(
+        future: this.screenRefreshed(context),
+        builder: (context, snapshot) {
+          return snapshot.connectionState == ConnectionState.waiting
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () => this.screenRefreshed(context),
+                  child: Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Consumer<Products>(
+                      builder: (context, productsProvider, child) =>
+                          ListView.builder(
+                        itemCount: productsProvider.products.length,
+                        itemBuilder: (ctx, i) =>
+                            UserProductItem(productsProvider.products[i]),
+                      ),
+                    ),
+                  ),
+                );
+        },
       ),
       drawer: MainDrawer(),
     );

@@ -27,15 +27,18 @@ class Products with ChangeNotifier {
     return this._products.firstWhere((p) => p.id == id);
   }
 
-  Future<void> fetch() async {
+  Future<void> fetch([bool filterByUser = false]) async {
+    final filterParam = filterByUser
+        ? '&orderBy="creatorId"&equalTo="${this.authProvider.userId}"'
+        : '';
     http.Response prodRes;
     http.Response userFavRes;
 
     try {
       prodRes = await http.get(getAuthURL(
-        resource: 'products',
-        token: this.authProvider.token,
-      ));
+          resource: 'products',
+          token: this.authProvider.token,
+          params: filterParam));
 
       try {
         userFavRes = await http.get(getAuthURL(
@@ -56,15 +59,19 @@ class Products with ChangeNotifier {
 
       decodedProdRes.forEach(
         (id, properties) {
+          final isFavorite = decodedUserFavRes == null
+              ? false
+              : decodedUserFavRes[id] == null
+                  ? false
+                  : decodedUserFavRes[id]['isFavorite'] ?? false;
+
           fetchedProducts.add(Product(
             id: id,
             title: properties['title'],
             description: properties['description'],
             imageUrl: properties['imageUrl'],
             price: properties['price'],
-            isFavorite: decodedUserFavRes == null
-                ? false
-                : decodedUserFavRes[id] ?? false,
+            isFavorite: isFavorite,
           ));
         },
       );
@@ -82,6 +89,7 @@ class Products with ChangeNotifier {
         getAuthURL(resource: 'products', token: this.authProvider.token),
         body: json.encode({
           'title': product.title,
+          'creatorId': this.authProvider.userId,
           'price': product.price,
           'imageUrl': product.imageUrl,
           'description': product.description,
