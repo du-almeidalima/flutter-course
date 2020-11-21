@@ -94,7 +94,8 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _passwordController = TextEditingController();
   final _passwordFocusNode = FocusNode();
@@ -106,9 +107,43 @@ class _AuthCardState extends State<AuthCard> {
     'password': '',
   };
 
+  // This is the class that is going to play, reverse the animation. To build a
+  // Controller we need to provide a widget as 'vsync' parameter that implements
+  // a TickerProvider, which is a class that fires a callback when a frame chang
+  AnimationController _controller;
+  // The animation that the controller is going to use, this is the part that
+  // Changes the value, for this example, the height
+  Animation<Size> _heightAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // == ANIMATION ==
+    this._controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 300,
+      ),
+    );
+    this._heightAnimation = Tween<Size>(
+      begin: Size(double.infinity, 260),
+      end: Size(double.infinity, 320),
+    ).animate(CurvedAnimation(
+      parent: this._controller,
+      curve: Curves.easeOut,
+    ));
+
+    // To repaint the screen
+    _heightAnimation.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
+    this._controller.dispose();
     this._passwordFocusNode.dispose();
   }
 
@@ -120,6 +155,7 @@ class _AuthCardState extends State<AuthCard> {
       ),
     );
   }
+
   void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -144,7 +180,7 @@ class _AuthCardState extends State<AuthCard> {
     } on HttpException catch (e) {
       var errorMessage = 'Authentication Failed';
 
-      switch(e.message) {
+      switch (e.message) {
         case 'EMAIL_EXISTS':
           errorMessage = 'This email is already in use';
           break;
@@ -177,10 +213,12 @@ class _AuthCardState extends State<AuthCard> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
+      _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.Login;
       });
+      _controller.reverse();
     }
   }
 
@@ -193,9 +231,8 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 320 : 260,
-        constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+        height: _heightAnimation.value.height,
+        constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
