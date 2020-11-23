@@ -5,7 +5,7 @@ import 'package:shopps/providers/auth_provider.dart';
 import 'package:shopps/providers/cart.provider.dart';
 import 'package:shopps/providers/orders.provider.dart';
 import 'package:shopps/providers/products.provider.dart';
-import 'package:shopps/screens/auth_screen.dart';
+import 'package:shopps/old/auth_screen_with_animated_container.dart';
 import 'package:shopps/screens/cart_screen.dart';
 import 'package:shopps/screens/edit-product-screen.dart';
 import 'package:shopps/screens/orders_screen.dart';
