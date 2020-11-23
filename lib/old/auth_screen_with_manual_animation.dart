@@ -111,7 +111,6 @@ class _AuthCardState extends State<AuthCard>
   // Controller we need to provide a widget as 'vsync' parameter that implements
   // a TickerProvider, which is a class that fires a callback when a frame chang
   AnimationController _controller;
-
   // The animation that the controller is going to use, this is the part that
   // Changes the value, for this example, the height
   Animation<Size> _heightAnimation;
@@ -134,11 +133,17 @@ class _AuthCardState extends State<AuthCard>
       parent: this._controller,
       curve: Curves.easeOut,
     ));
+
+    // To repaint the screen
+    _heightAnimation.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    this._controller.dispose();
     this._passwordFocusNode.dispose();
   }
 
@@ -225,17 +230,11 @@ class _AuthCardState extends State<AuthCard>
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      // Similar to consumer, this Widget takes a child Widget that will not
-      // Be re-render to increase performance
-      child: AnimatedBuilder(
-        animation: this._heightAnimation,
-        builder: (ctx, child) => Container(
-          height: _heightAnimation.value.height,
-          constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
-          width: deviceSize.width * 0.75,
-          padding: EdgeInsets.all(16.0),
-          child: child,
-        ),
+      child: Container(
+        height: _heightAnimation.value.height,
+        constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
+        width: deviceSize.width * 0.75,
+        padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
