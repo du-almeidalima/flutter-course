@@ -57,10 +57,14 @@ class ProductDetailScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              Image.network(
-                product.imageUrl,
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.5,
+              // The tag must match the previous Hero tag (product_item.dart)
+              Hero(
+                tag: product.id,
+                child: Image.network(
+                  product.imageUrl,
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                ),
               ),
               SizedBox(height: 20),
               Text(
