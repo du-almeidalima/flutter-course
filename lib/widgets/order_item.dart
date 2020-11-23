@@ -9,10 +9,14 @@ class OrderItem extends StatefulWidget {
 
   const OrderItem(this.orderItem);
 
-  Widget buildExpandedContent() {
-    return Container(
-      // Choosing the minimul high for few items or for more items
-      height: (min((20 * this.orderItem.items.length) + 50.0, 200)),
+  Widget buildExpandedContent(bool isExpanded) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      // Choosing the minimum high for few items or for more items
+      height: isExpanded
+          ? (min((20 * this.orderItem.items.length) + 50.0, 200))
+          : 0,
       child: ListView(
         children: this
             .orderItem
@@ -64,28 +68,34 @@ class _OrderItemState extends State<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text('\$${this.widget.orderItem.total}'),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy, hh:mm')
-                  .format(this.widget.orderItem.date),
-            ),
-            trailing: IconButton(
-              icon: Icon(
-                this._isExpanded ? Icons.expand_less : Icons.expand_more,
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+      height: this._isExpanded
+          ? (min((20 * widget.orderItem.items.length) + 150.0, 180))
+          : 80,
+      child: Card(
+        child: Column(
+          children: [
+            ListTile(
+              title: Text('\$${widget.orderItem.total}'),
+              subtitle: Text(
+                DateFormat('dd/MM/yyyy, hh:mm').format(widget.orderItem.date),
               ),
-              onPressed: () {
-                setState(() {
-                  this._isExpanded = !this._isExpanded;
-                });
-              },
+              trailing: IconButton(
+                icon: Icon(
+                  this._isExpanded ? Icons.expand_less : Icons.expand_more,
+                ),
+                onPressed: () {
+                  setState(() {
+                    this._isExpanded = !this._isExpanded;
+                  });
+                },
+              ),
             ),
-          ),
-          if (this._isExpanded) widget.buildExpandedContent()
-        ],
+            widget.buildExpandedContent(this._isExpanded)
+          ],
+        ),
       ),
     );
   }
