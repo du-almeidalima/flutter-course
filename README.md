@@ -1,8 +1,8 @@
-# Section 9: Shopps App (HTTP)
+# Section 10: Shopps App (HTTP)
 
 This is the repository for the Flutter course ([Flutter and Dart - The Complete Guide](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/))
-In this section I'll be building an Shopps app, specifically in this section, I'll tackle how to use
-HTTP Requests in Flutter
+In this section I'll be building an Shopps app, specifically in this section, I'll tackle how to use Animations
+with Flutter.
 
 In here all my commits will be made with comments and the title of the lesson.
 

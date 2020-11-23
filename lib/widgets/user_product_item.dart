@@ -46,16 +46,23 @@ class UserProductItem extends StatelessWidget {
       context: context,
       builder: (ctx) => this.buildConfirmDialog(context, ctx),
     ).then((result) {
-      Provider.of<Products>(context, listen: false)
-          .delete(productId)
-          .catchError((_) {
-        GlobalScaffoldKey.instance.showGlobalSnackbar(
-          SnackBar(
-            content: Text("Item couldn't be deleted"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      });
+      Provider.of<Products>(context, listen: false).delete(productId)
+        .then((_) {
+          GlobalScaffoldKey.instance.showGlobalSnackbar(
+            SnackBar(
+              content: Text("Item successfully deleted"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        })
+        .catchError((_) {
+          GlobalScaffoldKey.instance.showGlobalSnackbar(
+            SnackBar(
+              content: Text("Item couldn't be deleted"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        });
     });
   }
 
@@ -68,8 +75,12 @@ class UserProductItem extends StatelessWidget {
           children: [
             Expanded(
               flex: 1,
-              child: Image.network(
-                product.imageUrl,
+              child: FadeInImage(
+                placeholder:
+                    AssetImage('assets/images/product-placeholder.png'),
+                image: NetworkImage(
+                  product.imageUrl,
+                ),
                 fit: BoxFit.cover,
               ),
             ),

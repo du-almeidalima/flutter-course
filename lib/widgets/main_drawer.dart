@@ -42,6 +42,10 @@ class MainDrawer extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           Divider(),
+          buildListTile(Icons.home, 'Home', () {
+            Navigator.of(context).pushReplacementNamed('/');
+          }),
+          Divider(),
           buildListTile(Icons.shopping_cart, 'Shopping Cart', () {
             Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
             // Local Route Custom Transition Animation

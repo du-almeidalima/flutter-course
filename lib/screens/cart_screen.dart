@@ -82,6 +82,10 @@ class OrderButton extends StatefulWidget {
 class _OrderButtonState extends State<OrderButton> {
   var isLoading = false;
 
+  bool get _isCartEmpty {
+    return widget.cartProvider.itemCount == 0;
+  }
+
   void handleButtonPressed() async {
     setState(() {
       this.isLoading = true;
@@ -105,7 +109,7 @@ class _OrderButtonState extends State<OrderButton> {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      onPressed: widget.cartProvider.itemCount > 0
+      onPressed: !this._isCartEmpty
           ? () {
               this.handleButtonPressed();
             }
@@ -114,7 +118,10 @@ class _OrderButtonState extends State<OrderButton> {
           ? CircularProgressIndicator()
           : Text(
               'ORDER NOW!',
-              style: TextStyle(color: Theme.of(context).accentColor),
+              style: TextStyle(
+                color:
+                    !_isCartEmpty ? Theme.of(context).accentColor : Colors.grey,
+              ),
             ),
     );
   }

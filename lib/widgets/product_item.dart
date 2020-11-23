@@ -47,7 +47,7 @@ class ProductItem extends StatelessWidget {
             // This tag will tell the new screen which image to expand
             tag: productProvider.id,
             child: FadeInImage(
-              placeholder: AssetImage('/assets/images/product-placeholder.png'),
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
               image: NetworkImage(
                 productProvider.imageUrl,
               ),

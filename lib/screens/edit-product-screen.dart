@@ -169,7 +169,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ? const Center(child: Text('Enter a URL'))
         : FittedBox(
             fit: BoxFit.cover,
-            child: Image.network(value),
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(value),
+              fit: BoxFit.cover,
+            ),
           );
   }
 
