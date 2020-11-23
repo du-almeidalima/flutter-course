@@ -100,7 +100,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           backgroundColor: Colors.green,
         ),
       );
-    } on Exception catch (e) {
+    } on Exception catch (_) {
       await showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
