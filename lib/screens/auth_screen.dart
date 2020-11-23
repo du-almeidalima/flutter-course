@@ -116,6 +116,10 @@ class _AuthCardState extends State<AuthCard>
   // Changes the value, for this example, the height
   Animation<Size> _heightAnimation;
 
+  // This animation will be to fade in and out inputs when AuthMode changes
+  Animation<double> _inputFadeAnimation;
+  Animation<Offset> _inputSlideAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -134,6 +138,17 @@ class _AuthCardState extends State<AuthCard>
       parent: this._controller,
       curve: Curves.easeOut,
     ));
+    // The cool thing is that we can hook up more than one animation per
+    // controller
+    this._inputFadeAnimation = Tween(begin: 0.0, end: 1.0)
+        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+
+    this._inputSlideAnimation = Tween<Offset>(
+      begin: Offset(0, -0.3),
+      end: Offset(0, 0),
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
+    );
   }
 
   @override
@@ -274,21 +289,34 @@ class _AuthCardState extends State<AuthCard>
                     _authData['password'] = value;
                   },
                 ),
-                if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-
-                            return null;
-                          }
-                        : null,
+                AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  constraints: BoxConstraints(
+                    minHeight: _authMode == AuthMode.Signup ? 60 : 0,
+                    maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
                   ),
+                  child: FadeTransition(
+                    opacity: this._inputFadeAnimation,
+                    child: SlideTransition(
+                      position: this._inputSlideAnimation,
+                      child: TextFormField(
+                        enabled: _authMode == AuthMode.Signup,
+                        decoration:
+                            InputDecoration(labelText: 'Confirm Password'),
+                        obscureText: true,
+                        validator: _authMode == AuthMode.Signup
+                            ? (value) {
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match!';
+                                }
+
+                                return null;
+                              }
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
                 SizedBox(
                   height: 20,
                 ),
