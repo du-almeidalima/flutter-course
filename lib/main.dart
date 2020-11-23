@@ -13,6 +13,7 @@ import 'package:shopps/screens/product_detail_screen.dart';
 import 'package:shopps/screens/products_overview_screen.dart';
 import 'package:shopps/screens/splash_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
+import 'package:shopps/utils/CustomRoute.dart';
 import 'package:shopps/utils/GlobalScaffoldKey.dart';
 
 void main() {
@@ -67,6 +68,10 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
+            pageTransitionsTheme: PageTransitionsTheme(builders: {
+              TargetPlatform.android: CustomPageTransitionBuilder(),
+              TargetPlatform.iOS: CustomPageTransitionBuilder()
+            })
           ),
           builder: (context, child) {
             // Introducing a global Scaffold

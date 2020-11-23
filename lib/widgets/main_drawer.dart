@@ -4,6 +4,7 @@ import 'package:shopps/providers/auth_provider.dart';
 import 'package:shopps/screens/cart_screen.dart';
 import 'package:shopps/screens/orders_screen.dart';
 import 'package:shopps/screens/user_products_screen.dart';
+import 'package:shopps/utils/CustomRoute.dart';
 
 class MainDrawer extends StatelessWidget {
   ListTile buildListTile(IconData icon, String title, Function onTileTapped) {
@@ -43,6 +44,10 @@ class MainDrawer extends StatelessWidget {
           Divider(),
           buildListTile(Icons.shopping_cart, 'Shopping Cart', () {
             Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
+            // Local Route Custom Transition Animation
+            // Navigator.of(context).pushReplacement(CustomRoute(
+            //   builder: (ctx) => OrdersScreen(),
+            // ));
           }),
           Divider(),
           buildListTile(Icons.shopping_bag, 'Orders', () {
