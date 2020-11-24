@@ -2,8 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart' as sysPaths;
 
 class ImageInput extends StatefulWidget {
+  final Function(File pickedImage) onSelectImage;
+
+  const ImageInput({this.onSelectImage});
+
   @override
   _ImageInputState createState() => _ImageInputState();
 }
@@ -13,10 +19,27 @@ class _ImageInputState extends State<ImageInput> {
 
   void _takePicture() async {
     final picker = ImagePicker();
-    final imageFile = picker.getImage(
+    final pickerImageFile = await picker.getImage(
       source: ImageSource.camera,
       maxWidth: 600,
     );
+    final imageFile = File(pickerImageFile.path);
+
+    setState(() {
+      this._storedImage = imageFile;
+    });
+
+    // To save a File in the device HD, we need to follow the OSs rules. Both
+    // Android and IOs specify locations/paths in were a File can be saved.
+    // For that the package path_provide is useful
+
+    final appDir = await sysPaths.getApplicationDocumentsDirectory();
+    // Get the fileName
+    final fileName = path.basename(imageFile.path);
+    final savedImage = await this._storedImage.copy('${appDir.path}/$fileName');
+
+    // Call parent handler
+    widget.onSelectImage(savedImage);
   }
 
   Widget buildImagePreviewOrText(File image) {
@@ -47,7 +70,7 @@ class _ImageInputState extends State<ImageInput> {
         Expanded(
           child: Container(
             padding: EdgeInsets.all(1),
-            height: 100,
+            height: 400,
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 border: Border.all(
@@ -61,7 +84,7 @@ class _ImageInputState extends State<ImageInput> {
                 Align(
                   alignment: Alignment(1, -1),
                   child: IconButton(
-                    icon: Icon(Icons.camera),
+                    icon: Icon(Icons.camera_alt),
                     color: Colors.indigoAccent,
                     onPressed: () {this._takePicture();},
                   ),
