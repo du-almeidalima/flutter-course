@@ -23,8 +23,12 @@ class _ImageInputState extends State<ImageInput> {
       source: ImageSource.camera,
       maxWidth: 600,
     );
-    final imageFile = File(pickerImageFile.path);
 
+    if (pickerImageFile == null) {
+      return;
+    }
+
+    final imageFile = File(pickerImageFile.path);
     setState(() {
       this._storedImage = imageFile;
     });

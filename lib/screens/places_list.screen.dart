@@ -13,6 +13,33 @@ class PlacesListScreen extends StatelessWidget {
     );
   }
 
+  Widget buildPlaceholderText() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(height: 200),
+        const Text(
+          'There are no places yet!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const Text(
+          'Try adding some.',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,34 +55,26 @@ class PlacesListScreen extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Consumer<GreatPlaces>(
-          builder: (context, greatPlacesProvider, child) {
-            return greatPlacesProvider.items.length == 0
-                ? Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 200),
-                    const Text(
-                      'There are no places yet!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      'Try adding some.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                )
-                : this.buildGreatPlacesList(context, greatPlacesProvider.items);
+        child: FutureBuilder(
+          future: Provider.of<GreatPlaces>(context, listen: false).fetch(),
+          builder: (ctx, fetchSnapshot) {
+            if (fetchSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            if (fetchSnapshot.hasError) {
+              Center(child: Text('An error has occurred while fetching!'));
+            }
+
+            return Consumer<GreatPlaces>(
+              builder: (context, greatPlacesProvider, _) =>
+                  greatPlacesProvider.items.length == 0
+                      ? this.buildPlaceholderText()
+                      : this.buildGreatPlacesList(
+                          context,
+                          greatPlacesProvider.items,
+                        ),
+            );
           },
         ),
       ),
