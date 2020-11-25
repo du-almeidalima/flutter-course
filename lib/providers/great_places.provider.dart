@@ -11,11 +11,11 @@ class GreatPlaces with ChangeNotifier {
     return [...this._items];
   }
 
-  void add(String title, File image) {
+  void add(String title, File image, PlaceLocation placeLocation) {
     final place = Place(
       id: DateTime.now().toString(),
       title: title,
-      location: null,
+      location: placeLocation,
       image: image,
     );
 
@@ -26,6 +26,8 @@ class GreatPlaces with ChangeNotifier {
       'id': place.id,
       'title': place.title,
       'image': place.image.path,
+      'loc_lat': place.location.latitude,
+      'loc_lng': place.location.longitude,
     });
   }
 
@@ -35,9 +37,12 @@ class GreatPlaces with ChangeNotifier {
         .map((item) => Place(
               id: item['id'],
               title: item['title'],
-              location: null,
               // Creating a File with the Image File
               image: File(item['image']),
+              location: PlaceLocation(
+                latitude: item['loc_lat'],
+                longitude: item['loc_lng'],
+              ),
             ))
         .toList();
     notifyListeners();

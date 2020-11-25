@@ -13,15 +13,19 @@ class GreatPlacesDB {
       path.join(dbPath, 'great_places.db'),
       // Callback called when openDatabase doesn't find a file
       onCreate: (db, version) {
-        db.execute(
-            'CREATE TABLE $_PLACES_TABLE(id TEXT PRIMARY KEY, title TEXT, image TEXT)');
+        db.execute('CREATE TABLE $_PLACES_TABLE('
+            'id TEXT PRIMARY KEY,'
+            'title TEXT,'
+            'image TEXT,'
+            'loc_lat REAL,loc_lng REAL'
+          ')'
+        );
       },
       version: 1,
     );
   }
 
   static Future<void> insert(Map<String, Object> data) async {
-
     final db = await GreatPlacesDB.database();
     await db.insert(
       _PLACES_TABLE,
