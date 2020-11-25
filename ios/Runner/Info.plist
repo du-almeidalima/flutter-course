@@ -26,6 +26,10 @@
     <string>Use the gallery to get already stored pictures</string>
     <key>NSCameraUsageDescription</key>
     <string>Take images of the great places you are!</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Allow the app to record your location on a photo</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Allow the app to record your location on a photo</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
