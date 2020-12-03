@@ -1,7 +1,9 @@
-# Section 11: Great Places App (Device Features)
+# Section 14: Firebase Chat App (With BLoC and Injectable)
 
 This is the repository for the Flutter course ([Flutter and Dart - The Complete Guide](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/))
-This project will be focused on using devices features, such as camera, filesystem, map, etc.
+This is the final course project that will apply everything learned so far. Furthermore, I took the liberty of applying the BLoC design pattern with the IoC using DDD.
+
+The API is heavily based on Firestore.
 
 In here all my commits will be made with comments and the title of the lesson.
 

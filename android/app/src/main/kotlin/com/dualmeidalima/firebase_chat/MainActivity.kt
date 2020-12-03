@@ -1,4 +1,4 @@
-package com.example.great_places
+package com.dualmeidalima.firebase_chat
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "339812977686",
+    "firebase_url": "https://du-flutter-chat.firebaseio.com",
+    "project_id": "du-flutter-chat",
+    "storage_bucket": "du-flutter-chat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339812977686:android:d333064df1b03d97967937",
+        "android_client_info": {
+          "package_name": "com.dualmeidalima.firebase_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "339812977686-7aqrjla44n5j0men9neeaat5ubueiv9u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0xb1N4KWbzdoXxXJX4asHWJH68SUQptY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "339812977686-7aqrjla44n5j0men9neeaat5ubueiv9u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
