@@ -8,10 +8,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import 'app/screens/auth/bloc/auth_cubit.dart';
 import 'app/screens/chat/chat_cubit.dart';
 import 'data/repositories/chat/chat_repository_impl.dart';
 import 'data/api/firebase_api_module.dart';
-import 'domain/chat/usecases/getMessagesStream.dart';
 import 'domain/chat/repositories/chat_repository.dart';
 
 /// adds generated dependencies
@@ -26,9 +26,8 @@ GetIt $initGetIt(
   final firebaseApiModule = _$FirebaseApiModule();
   gh.lazySingleton<Firestore>(() => firebaseApiModule.firestore);
   gh.factory<IChatRepository>(() => ChatRepositoryImpl(get<Firestore>()));
-  gh.factory<GetMessagesStream>(
-      () => GetMessagesStream(get<IChatRepository>()));
-  gh.factory<ChatCubit>(() => ChatCubit(get<GetMessagesStream>()));
+  gh.factory<AuthCubit>(() => AuthCubit(get<IChatRepository>()));
+  gh.factory<ChatCubit>(() => ChatCubit(get<IChatRepository>()));
   return get;
 }
 

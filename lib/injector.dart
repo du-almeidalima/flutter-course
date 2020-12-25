@@ -3,7 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import 'injector.config.dart';
 
+// flutter packages pub run build_runner watch --delete-conflicting-outputs
 final getIt = GetIt.instance;
 
 @InjectableInit()
-void configureDependencies() => $initGetIt(getIt);
+void initDependencyInjection() => $initGetIt(getIt);
