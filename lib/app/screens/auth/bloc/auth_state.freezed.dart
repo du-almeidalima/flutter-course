@@ -29,8 +29,10 @@ class _$AuthStateTearOff {
   }
 
 // ignore: unused_element
-  AuthError error() {
-    return const AuthError();
+  AuthError error(Failure failure) {
+    return AuthError(
+      failure,
+    );
   }
 }
 
@@ -45,14 +47,14 @@ mixin _$AuthState {
     @required TResult initial(),
     @required TResult loading(),
     @required TResult loaded(),
-    @required TResult error(),
+    @required TResult error(Failure failure),
   });
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult initial(),
     TResult loading(),
     TResult loaded(),
-    TResult error(),
+    TResult error(Failure failure),
     @required TResult orElse(),
   });
   @optionalTypeArgs
@@ -128,7 +130,7 @@ class _$AuthInitial implements AuthInitial {
     @required TResult initial(),
     @required TResult loading(),
     @required TResult loaded(),
-    @required TResult error(),
+    @required TResult error(Failure failure),
   }) {
     assert(initial != null);
     assert(loading != null);
@@ -143,7 +145,7 @@ class _$AuthInitial implements AuthInitial {
     TResult initial(),
     TResult loading(),
     TResult loaded(),
-    TResult error(),
+    TResult error(Failure failure),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -230,7 +232,7 @@ class _$AuthLoading implements AuthLoading {
     @required TResult initial(),
     @required TResult loading(),
     @required TResult loaded(),
-    @required TResult error(),
+    @required TResult error(Failure failure),
   }) {
     assert(initial != null);
     assert(loading != null);
@@ -245,7 +247,7 @@ class _$AuthLoading implements AuthLoading {
     TResult initial(),
     TResult loading(),
     TResult loaded(),
-    TResult error(),
+    TResult error(Failure failure),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -331,7 +333,7 @@ class _$AuthLoaded implements AuthLoaded {
     @required TResult initial(),
     @required TResult loading(),
     @required TResult loaded(),
-    @required TResult error(),
+    @required TResult error(Failure failure),
   }) {
     assert(initial != null);
     assert(loading != null);
@@ -346,7 +348,7 @@ class _$AuthLoaded implements AuthLoaded {
     TResult initial(),
     TResult loading(),
     TResult loaded(),
-    TResult error(),
+    TResult error(Failure failure),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
@@ -396,6 +398,7 @@ abstract class AuthLoaded implements AuthState {
 abstract class $AuthErrorCopyWith<$Res> {
   factory $AuthErrorCopyWith(AuthError value, $Res Function(AuthError) then) =
       _$AuthErrorCopyWithImpl<$Res>;
+  $Res call({Failure failure});
 }
 
 /// @nodoc
@@ -406,24 +409,44 @@ class _$AuthErrorCopyWithImpl<$Res> extends _$AuthStateCopyWithImpl<$Res>
 
   @override
   AuthError get _value => super._value as AuthError;
+
+  @override
+  $Res call({
+    Object failure = freezed,
+  }) {
+    return _then(AuthError(
+      failure == freezed ? _value.failure : failure as Failure,
+    ));
+  }
 }
 
 /// @nodoc
 class _$AuthError implements AuthError {
-  const _$AuthError();
+  const _$AuthError(this.failure) : assert(failure != null);
+
+  @override
+  final Failure failure;
 
   @override
   String toString() {
-    return 'AuthState.error()';
+    return 'AuthState.error(failure: $failure)';
   }
 
   @override
   bool operator ==(dynamic other) {
-    return identical(this, other) || (other is AuthError);
+    return identical(this, other) ||
+        (other is AuthError &&
+            (identical(other.failure, failure) ||
+                const DeepCollectionEquality().equals(other.failure, failure)));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(failure);
+
+  @override
+  $AuthErrorCopyWith<AuthError> get copyWith =>
+      _$AuthErrorCopyWithImpl<AuthError>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -431,13 +454,13 @@ class _$AuthError implements AuthError {
     @required TResult initial(),
     @required TResult loading(),
     @required TResult loaded(),
-    @required TResult error(),
+    @required TResult error(Failure failure),
   }) {
     assert(initial != null);
     assert(loading != null);
     assert(loaded != null);
     assert(error != null);
-    return error();
+    return error(failure);
   }
 
   @override
@@ -446,12 +469,12 @@ class _$AuthError implements AuthError {
     TResult initial(),
     TResult loading(),
     TResult loaded(),
-    TResult error(),
+    TResult error(Failure failure),
     @required TResult orElse(),
   }) {
     assert(orElse != null);
     if (error != null) {
-      return error();
+      return error(failure);
     }
     return orElse();
   }
@@ -489,5 +512,8 @@ class _$AuthError implements AuthError {
 }
 
 abstract class AuthError implements AuthState {
-  const factory AuthError() = _$AuthError;
+  const factory AuthError(Failure failure) = _$AuthError;
+
+  Failure get failure;
+  $AuthErrorCopyWith<AuthError> get copyWith;
 }

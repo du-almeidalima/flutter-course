@@ -14,7 +14,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoginForm = true;
   bool _showFormErrors = false;
-  bool _hidePassword = false;
+  bool _hidePassword = true;
   String _emailField = '';
   String _userNameField = '';
   String _passwordField = '';
@@ -34,9 +34,14 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     this._formKey.currentState.save();
-    print(this._emailField);
-    print(this._userNameField);
-    print(this._passwordField);
+
+    // Submit values according to form type
+    this._isLoginForm
+        ? context
+            .read<AuthCubit>()
+            .signInWithEmailAndPassword(this._emailField, this._passwordField)
+        : context.read<AuthCubit>().createUserWithEmailAndPassword(
+            this._emailField, this._passwordField);
   }
 
   @override
@@ -126,16 +131,22 @@ class _AuthFormState extends State<AuthForm> {
     return SizedBox(
       width: double.infinity,
       child: RaisedButton(
-        padding: EdgeInsets.symmetric(vertical: 15),
-        onPressed: this._formSubmitHandler,
-        child: Text(
-          this._isLoginForm ? 'Login' : 'Sign Up',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+          padding: EdgeInsets.symmetric(vertical: 15),
+          onPressed: this._formSubmitHandler,
+          child: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return state.maybeMap(
+                loading: (_) => CircularProgressIndicator(),
+                orElse: () => Text(
+                  this._isLoginForm ? 'Login' : 'Sign Up',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            },
+          )),
     );
   }
 

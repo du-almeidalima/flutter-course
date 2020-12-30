@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_chat/domain/chat/repositories/chat_repository.dart';
+import 'package:firebase_chat/domain/chat/chat_repository.dart';
 import 'package:injectable/injectable.dart';
 
 @Injectable(as: IChatRepository)
