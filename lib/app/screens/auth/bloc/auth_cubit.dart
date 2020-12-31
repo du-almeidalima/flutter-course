@@ -30,11 +30,13 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> createUserWithEmailAndPassword(
     String email,
     String password,
+    String username,
   ) async {
     emit(const AuthState.loading());
     final res = await this._authRepository.createUserWithEmailAndPassword(
           email.trim(),
           password.trim(),
+          username.trim(),
         );
 
     res.fold(

@@ -29,7 +29,8 @@ GetIt $initGetIt(
   final firebaseApiModule = _$FirebaseApiModule();
   gh.lazySingleton<FirebaseAuth>(() => firebaseApiModule.firebaseAuth);
   gh.lazySingleton<Firestore>(() => firebaseApiModule.firestore);
-  gh.factory<IAuthRepository>(() => AuthRepositoryImpl(get<FirebaseAuth>()));
+  gh.factory<IAuthRepository>(
+      () => AuthRepositoryImpl(get<FirebaseAuth>(), get<Firestore>()));
   gh.factory<IChatRepository>(() => ChatRepositoryImpl(get<Firestore>()));
   gh.factory<ChatCubit>(() => ChatCubit(get<IChatRepository>()));
 

@@ -4,6 +4,7 @@ import 'package:firebase_chat/injector.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   initDependencyInjection();
   runApp(MyApp());
 }

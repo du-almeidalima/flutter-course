@@ -37,11 +37,15 @@ class _AuthFormState extends State<AuthForm> {
 
     // Submit values according to form type
     this._isLoginForm
-        ? context
-            .read<AuthCubit>()
-            .signInWithEmailAndPassword(this._emailField, this._passwordField)
+        ? context.read<AuthCubit>().signInWithEmailAndPassword(
+              this._emailField,
+              this._passwordField,
+            )
         : context.read<AuthCubit>().createUserWithEmailAndPassword(
-            this._emailField, this._passwordField);
+              this._emailField,
+              this._passwordField,
+              this._userNameField,
+            );
   }
 
   @override
