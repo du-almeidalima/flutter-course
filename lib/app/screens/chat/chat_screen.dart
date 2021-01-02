@@ -4,13 +4,13 @@ import 'package:firebase_chat/injector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'chat_cubit.dart';
+import 'bloc/chat_cubit.dart';
 
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ChatCubit>(),
+      create: (_) => getIt<ChatCubit>()..getText(),
       child: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(

@@ -11,7 +11,7 @@ import 'package:injectable/injectable.dart';
 
 import 'app/screens/auth/bloc/auth_cubit.dart';
 import 'data/auth/auth_repository_impl.dart';
-import 'app/screens/chat/chat_cubit.dart';
+import 'app/screens/chat/bloc/chat_cubit.dart';
 import 'data/chat/chat_repository_impl.dart';
 import 'data/core/firebase_api_module.dart';
 import 'domain/auth/auth_repository.dart';
@@ -32,10 +32,10 @@ GetIt $initGetIt(
   gh.factory<IAuthRepository>(
       () => AuthRepositoryImpl(get<FirebaseAuth>(), get<Firestore>()));
   gh.factory<IChatRepository>(() => ChatRepositoryImpl(get<Firestore>()));
-  gh.factory<ChatCubit>(() => ChatCubit(get<IChatRepository>()));
 
   // Eager singletons must be registered in the right order
   gh.singleton<AuthCubit>(AuthCubit(get<IAuthRepository>()));
+  gh.singleton<ChatCubit>(ChatCubit(get<IChatRepository>()));
   return get;
 }
 
