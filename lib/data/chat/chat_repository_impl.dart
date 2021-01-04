@@ -10,8 +10,21 @@ class ChatRepositoryImpl implements IChatRepository {
 
   @override
   Stream<QuerySnapshot> getText() {
-    return this._firestore
-        .collection('chats/9bOeEEt8z17BujigPw7v/messages')
+    return this
+        ._firestore
+        .collection('chat')
+        .orderBy(
+          'createdAt',
+          descending: true,
+        )
         .snapshots();
+  }
+
+  @override
+  Future<void> sendTextMessage(String message) async {
+    return await this._firestore.collection('chat').add({
+      'text': message,
+      'createdAt': Timestamp.now(),
+    });
   }
 }

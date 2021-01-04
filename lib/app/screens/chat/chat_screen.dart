@@ -18,12 +18,6 @@ class ChatScreen extends StatelessWidget {
             actions: [this._buildDropdownButton(context)],
           ),
           body: ChatBody(),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              context.read<ChatCubit>().getText();
-            },
-          ),
         ),
       ),
     );

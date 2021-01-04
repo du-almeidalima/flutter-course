@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 class AuthBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final statusBarHeight = MediaQuery.of(context).padding.top;
+    final screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
-      // padding: EdgeInsets.only(bottom: 20),
+      padding: EdgeInsets.only(top: statusBarHeight),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height - 25,
-          minWidth: MediaQuery.of(context).size.width,
+          minHeight: screenHeight - statusBarHeight,
+          minWidth: screenWidth,
         ),
         child: IntrinsicHeight(
           child: Column(
