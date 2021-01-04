@@ -13,14 +13,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> getText() async {
     emit(const ChatState.loading());
-    _chatRepository.getText().listen((messages) {
-      emit(
-        ChatState.loaded(
-          messages.documents
-              .map((document) => document['text'] as String)
-              .toList(),
-        ),
-      );
+    final chatStream = await _chatRepository.getText();
+    chatStream.listen((messages) {
+      emit(ChatState.loaded(messages));
     });
   }
 

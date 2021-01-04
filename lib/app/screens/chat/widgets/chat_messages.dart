@@ -21,16 +21,14 @@ class ChatMessages extends StatelessWidget {
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, List<dynamic> messages) {
+  Widget _buildChatMessages(BuildContext context, List<ChatMessage> messages) {
     return ListView.builder(
       reverse: true,
-
       itemCount: messages.length,
       itemBuilder: (context, index) {
         return _MessageBubble(
-          chatMessage: ChatMessage(
-            messages[index],
-          ),
+          chatMessage: messages[index],
+          key: ValueKey(messages[index].id),
         );
       },
     );
@@ -45,6 +43,8 @@ class _MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment:
+          chatMessage.isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         ConstrainedBox(
           constraints: BoxConstraints(
@@ -55,8 +55,17 @@ class _MessageBubble extends StatelessWidget {
             margin: const EdgeInsets.only(top: 10),
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Theme.of(context).primaryColorLight,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft:
+                    chatMessage.isMe ? Radius.circular(15) : Radius.circular(0),
+                bottomRight:
+                    chatMessage.isMe ? Radius.circular(0) : Radius.circular(15),
+              ),
+              color: chatMessage.isMe
+                  ? Theme.of(context).primaryColorLight
+                  : Colors.black26,
             ),
             child: Text(
               chatMessage.content,
