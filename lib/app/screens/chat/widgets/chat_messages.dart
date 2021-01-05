@@ -1,7 +1,8 @@
-import 'package:firebase_chat/data/chat/entity/ChatMessage.dart';
+import 'package:firebase_chat/app/shared/widgets/snackbar_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/chat/entities/chat_message.dart';
 import '../bloc/chat_cubit.dart';
 import '../bloc/chat_state.dart';
 
@@ -9,7 +10,17 @@ class ChatMessages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatCubit, ChatState>(
-      listener: (_, __) => null,
+      listener: (ctx, state) {
+        state.maybeWhen(
+          error: (failure) {
+            Scaffold.of(ctx).showSnackBar(SnackBarBuilder.fromFailure(
+              failure: failure,
+              context: context,
+            ));
+          },
+          orElse: () => null,
+        );
+      },
       builder: (context, state) {
         return state.maybeWhen(
             initial: () => Center(child: Text('No messages yet')),
@@ -67,11 +78,22 @@ class _MessageBubble extends StatelessWidget {
                   ? Theme.of(context).primaryColorLight
                   : Colors.black26,
             ),
-            child: Text(
-              chatMessage.content,
-              style: TextStyle(
-                color: Theme.of(context).primaryTextTheme.bodyText1.color,
-              ),
+            child: Column(
+              crossAxisAlignment: chatMessage.isMe
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: [
+                Text(
+                  chatMessage.username,
+                  style: TextStyle(color: Colors.black38),
+                ),
+                Text(
+                  chatMessage.content,
+                  style: TextStyle(
+                    color: Theme.of(context).primaryTextTheme.bodyText1.color,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

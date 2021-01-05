@@ -31,11 +31,12 @@ GetIt $initGetIt(
   gh.lazySingleton<Firestore>(() => firebaseApiModule.firestore);
   gh.factory<IAuthRepository>(
       () => AuthRepositoryImpl(get<FirebaseAuth>(), get<Firestore>()));
-  gh.factory<IChatRepository>(() => ChatRepositoryImpl(get<Firestore>()));
+  gh.factory<IChatRepository>(
+      () => ChatRepositoryImpl(get<Firestore>(), get<IAuthRepository>()));
+  gh.factory<ChatCubit>(() => ChatCubit(get<IChatRepository>()));
 
   // Eager singletons must be registered in the right order
   gh.singleton<AuthCubit>(AuthCubit(get<IAuthRepository>()));
-  gh.singleton<ChatCubit>(ChatCubit(get<IChatRepository>()));
   return get;
 }
 

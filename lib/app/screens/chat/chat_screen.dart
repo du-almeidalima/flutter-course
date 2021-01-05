@@ -10,7 +10,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<ChatCubit>()..getText(),
+      create: (_) => getIt<ChatCubit>()..getChatMessages(),
       child: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
