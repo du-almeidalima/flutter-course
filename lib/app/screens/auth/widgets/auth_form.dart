@@ -1,18 +1,27 @@
 import 'package:firebase_chat/app/screens/auth/bloc/auth_cubit.dart';
 import 'package:firebase_chat/app/screens/auth/bloc/auth_state.dart';
+import 'package:firebase_chat/app/screens/auth/widgets/auth_profile_image_picker.dart';
 import 'package:firebase_chat/app/shared/validators/email_validator.dart';
 import 'package:firebase_chat/app/shared/validators/password_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthForm extends StatefulWidget {
+  final bool isLogin;
+  final Function switchAuthFormMode;
+
+  const AuthForm({
+    Key key,
+    @required this.isLogin,
+    @required this.switchAuthFormMode,
+  }) : super(key: key);
+
   @override
   _AuthFormState createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _isLoginForm = true;
   bool _showFormErrors = false;
   bool _hidePassword = true;
   String _emailField = '';
@@ -36,7 +45,7 @@ class _AuthFormState extends State<AuthForm> {
     this._formKey.currentState.save();
 
     // Submit values according to form type
-    this._isLoginForm
+    widget.isLogin
         ? context.read<AuthCubit>().signInWithEmailAndPassword(
               this._emailField,
               this._passwordField,
@@ -61,11 +70,13 @@ class _AuthFormState extends State<AuthForm> {
                 : AutovalidateMode.disabled,
             key: _formKey,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
+                if (!widget.isLogin) AuthProfileImagePicker(),
                 this._buildEmailTextField(context),
                 SizedBox(height: 20),
-                if (!this._isLoginForm) this._buildUserNameTextField(context),
-                if (!this._isLoginForm) SizedBox(height: 20),
+                if (!widget.isLogin) this._buildUserNameTextField(context),
+                if (!widget.isLogin) SizedBox(height: 20),
                 this._buildPasswordTextField(context),
                 SizedBox(height: 20),
                 this._buildLoginButton(context),
@@ -78,6 +89,7 @@ class _AuthFormState extends State<AuthForm> {
       ),
     );
   }
+
 
   Widget _buildEmailTextField(BuildContext context) {
     return TextFormField(
@@ -142,7 +154,7 @@ class _AuthFormState extends State<AuthForm> {
               return state.maybeMap(
                 loading: (_) => CircularProgressIndicator(),
                 orElse: () => Text(
-                  this._isLoginForm ? 'Login' : 'Sign Up',
+                  widget.isLogin ? 'Login' : 'Sign Up',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -158,13 +170,9 @@ class _AuthFormState extends State<AuthForm> {
     return Align(
       alignment: Alignment.centerRight,
       child: FlatButton(
-        onPressed: () {
-          setState(() {
-            this._isLoginForm = !this._isLoginForm;
-          });
-        },
+        onPressed: widget.switchAuthFormMode,
         child: Text(
-          this._isLoginForm ? 'Create an account' : 'Back to login',
+          widget.isLogin ? 'Create an account' : 'Back to login',
           style: TextStyle(
             color: Theme.of(context).accentColor,
             fontWeight: FontWeight.bold,

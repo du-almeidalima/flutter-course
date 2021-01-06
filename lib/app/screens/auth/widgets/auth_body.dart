@@ -1,12 +1,26 @@
 import 'package:firebase_chat/app/screens/auth/widgets/auth_form.dart';
 import 'package:flutter/material.dart';
 
-class AuthBody extends StatelessWidget {
+class AuthBody extends StatefulWidget {
+  @override
+  _AuthBodyState createState() => _AuthBodyState();
+}
+
+class _AuthBodyState extends State<AuthBody> {
+  bool isLogin = true;
+
+  void _switchAuthFormMode() {
+    setState(() {
+      this.isLogin = !this.isLogin;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final statusBarHeight = MediaQuery.of(context).padding.top;
     final screenWidth = MediaQuery.of(context).size.width;
+
     return SingleChildScrollView(
       padding: EdgeInsets.only(top: statusBarHeight),
       child: ConstrainedBox(
@@ -16,11 +30,17 @@ class AuthBody extends StatelessWidget {
         ),
         child: IntrinsicHeight(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              this._buildLogo(context),
-              AuthForm(),
+              if(this.isLogin) this._buildLogo(context),
+              Expanded(
+                flex: this.isLogin ? 0 : 1,
+                child: AuthForm(
+                  switchAuthFormMode: this._switchAuthFormMode,
+                  isLogin: this.isLogin,
+                ),
+              ),
             ],
           ),
         ),

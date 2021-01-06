@@ -21,15 +21,19 @@ class _ChatInputState extends State<ChatInput> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 8),
-      padding: const EdgeInsets.all(8),
       child: Row(
         children: [
           Expanded(
             child: TextField(
               controller: this._messageController,
               decoration: InputDecoration(
-                labelText: 'Type a message',
-              ),
+                  hintText: 'Type a message...',
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  )),
               onChanged: (value) {
                 setState(() {
                   this._message = value;
