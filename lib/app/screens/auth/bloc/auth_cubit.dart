@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_chat/domain/auth/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
@@ -31,12 +33,14 @@ class AuthCubit extends Cubit<AuthState> {
     String email,
     String password,
     String username,
+    File profileImage,
   ) async {
     emit(const AuthState.loading());
     final res = await this._authRepository.createUserWithEmailAndPassword(
-          email.trim(),
-          password.trim(),
-          username.trim(),
+          email: email.trim(),
+          password: password.trim(),
+          username: username.trim(),
+          profileImage: profileImage
         );
 
     res.fold(

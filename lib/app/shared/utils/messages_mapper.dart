@@ -1,7 +1,7 @@
 const Map<String, String> _messagesCodes = {
   'UNKNOWN_ERROR': 'A unknown error has happened',
   'ERROR_TOO_MANY_REQUESTS': 'Too many login attempts, please try latter',
-  'ERROR_EMAIL_EXISTS': 'This email is already in use',
+  'ERROR_EMAIL_ALREADY_IN_USE': 'This email is already in use',
   'ERROR_INVALID_EMAIL': 'Email format is not correct',
   'ERROR_EMAIL_NOT_FOUND': 'No user were found with those credentials',
   'ERROR_INVALID_PASSWORD': 'No user were found with those credentials',

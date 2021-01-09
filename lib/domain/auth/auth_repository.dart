@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:firebase_chat/domain/core/error.dart';
 
@@ -9,11 +11,12 @@ abstract class IAuthRepository {
     String password,
   );
 
-  Future<Either<Failure, Unit>> createUserWithEmailAndPassword(
+  Future<Either<Failure, Unit>> createUserWithEmailAndPassword({
     String email,
     String password,
     String username,
-  );
+    File profileImage,
+  });
 
   Future<User> getCurrentUser();
 }

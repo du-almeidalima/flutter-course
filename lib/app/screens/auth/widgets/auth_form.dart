@@ -22,6 +22,7 @@ class AuthForm extends StatefulWidget {
 
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
+  final _authProfileImagePickerKey = GlobalKey<AuthProfileImagePickerState>();
   bool _showFormErrors = false;
   bool _hidePassword = true;
   String _emailField = '';
@@ -51,10 +52,10 @@ class _AuthFormState extends State<AuthForm> {
               this._passwordField,
             )
         : context.read<AuthCubit>().createUserWithEmailAndPassword(
-              this._emailField,
-              this._passwordField,
-              this._userNameField,
-            );
+            this._emailField,
+            this._passwordField,
+            this._userNameField,
+            this._authProfileImagePickerKey.currentState?.imageFile);
   }
 
   @override
@@ -72,7 +73,10 @@ class _AuthFormState extends State<AuthForm> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                if (!widget.isLogin) AuthProfileImagePicker(),
+                if (!widget.isLogin)
+                  AuthProfileImagePicker(
+                    key: this._authProfileImagePickerKey,
+                  ),
                 this._buildEmailTextField(context),
                 SizedBox(height: 20),
                 if (!widget.isLogin) this._buildUserNameTextField(context),
@@ -89,7 +93,6 @@ class _AuthFormState extends State<AuthForm> {
       ),
     );
   }
-
 
   Widget _buildEmailTextField(BuildContext context) {
     return TextFormField(

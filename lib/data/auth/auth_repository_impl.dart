@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/domain/auth/exceptions/unauthenticated_user_exception.dart';
 import 'package:firebase_chat/domain/core/error.dart';
 import 'package:firebase_chat/domain/core/severity_enum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
@@ -35,11 +38,12 @@ class AuthRepositoryImpl implements IAuthRepository {
   }
 
   @override
-  Future<Either<Failure, Unit>> createUserWithEmailAndPassword(
-    String email,
-    String password,
-    String username,
-  ) async {
+  Future<Either<Failure, Unit>> createUserWithEmailAndPassword({
+    @required String email,
+    @required String password,
+    @required String username,
+    File profileImage,
+  }) async {
     try {
       final authResp = await this._firebaseAuth.createUserWithEmailAndPassword(
             email: email,

@@ -4,13 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AuthProfileImagePicker extends StatefulWidget {
+  AuthProfileImagePicker({Key key}): super(key: key);
+
   @override
-  _AuthProfileImagePickerState createState() => _AuthProfileImagePickerState();
+  AuthProfileImagePickerState createState() => AuthProfileImagePickerState();
 }
 
-class _AuthProfileImagePickerState extends State<AuthProfileImagePicker> {
+class AuthProfileImagePickerState extends State<AuthProfileImagePicker> {
   final imagePicker = ImagePicker();
   File _imageFile;
+
+  File get imageFile {
+    return this._imageFile;
+  }
 
   Future<void> _pickImage() async {
     final pickedFile = await this.imagePicker.getImage(
