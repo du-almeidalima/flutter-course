@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_chat/domain/auth/exceptions/unauthenticated_user_exception.dart';
 import 'package:firebase_chat/domain/core/error.dart';
 import 'package:firebase_chat/domain/core/severity_enum.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
@@ -16,9 +17,14 @@ import '../../domain/auth/entities/user.dart';
 @Injectable(as: IAuthRepository)
 class AuthRepositoryImpl implements IAuthRepository {
   final FirebaseAuth _firebaseAuth;
+  final FirebaseStorage _firebaseStorage;
   final Firestore _firestore;
 
-  AuthRepositoryImpl(this._firebaseAuth, this._firestore);
+  AuthRepositoryImpl(
+    this._firebaseAuth,
+    this._firestore,
+    this._firebaseStorage,
+  );
 
   @override
   Future<Either<Failure, Unit>> signInWithEmailAndPassword(
@@ -45,14 +51,28 @@ class AuthRepositoryImpl implements IAuthRepository {
     File profileImage,
   }) async {
     try {
+      var profileImageUrl;
       final authResp = await this._firebaseAuth.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
 
+      // If the user choose an image, upload it to FireStore and get the path to save in the Users user document
+      if (profileImage != null) {
+        final ref = this
+            ._firebaseStorage
+            .ref()
+            .child('users_images')
+            .child(authResp.user.uid + '.jpg');
+
+        await ref.putFile(profileImage).onComplete;
+        profileImageUrl = await ref.getDownloadURL();
+      }
+
       this._firestore.collection('users').document(authResp.user.uid).setData({
         'username': username,
         'email': email,
+        'profileImageUrl': profileImageUrl
       });
 
       return right(unit);

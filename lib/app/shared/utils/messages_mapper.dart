@@ -4,6 +4,7 @@ const Map<String, String> _messagesCodes = {
   'ERROR_EMAIL_ALREADY_IN_USE': 'This email is already in use',
   'ERROR_INVALID_EMAIL': 'Email format is not correct',
   'ERROR_EMAIL_NOT_FOUND': 'No user were found with those credentials',
+  'ERROR_USER_NOT_FOUND': 'No user were found with those credentials',
   'ERROR_INVALID_PASSWORD': 'No user were found with those credentials',
   'USER_DISABLED': 'This account has been disabled'
 };

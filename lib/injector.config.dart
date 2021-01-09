@@ -5,6 +5,7 @@
 // **************************************************************************
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -28,9 +29,13 @@ GetIt $initGetIt(
   final gh = GetItHelper(get, environment, environmentFilter);
   final firebaseApiModule = _$FirebaseApiModule();
   gh.lazySingleton<FirebaseAuth>(() => firebaseApiModule.firebaseAuth);
+  gh.lazySingleton<FirebaseStorage>(() => firebaseApiModule.firebaseStorage);
   gh.lazySingleton<Firestore>(() => firebaseApiModule.firestore);
-  gh.factory<IAuthRepository>(
-      () => AuthRepositoryImpl(get<FirebaseAuth>(), get<Firestore>()));
+  gh.factory<IAuthRepository>(() => AuthRepositoryImpl(
+        get<FirebaseAuth>(),
+        get<Firestore>(),
+        get<FirebaseStorage>(),
+      ));
   gh.factory<IChatRepository>(
       () => ChatRepositoryImpl(get<Firestore>(), get<IAuthRepository>()));
   gh.factory<ChatCubit>(() => ChatCubit(get<IChatRepository>()));
